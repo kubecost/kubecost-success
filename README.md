@@ -12,4 +12,4 @@ Please let us know if you would like examples added either in the github issues 
 
 ## Usage
 
-There are different use cases outlined in this repo. Enterprise customers should reach out to the Customer Success team (which includes support) and support if there are any questions about which configurations to apply or which steps to follow.
+There are different use cases outlined in this repo. Enterprise customers should reach out to the Customer Success team (which includes support) if there are any questions about which configurations to apply or which steps to follow.
