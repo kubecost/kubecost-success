@@ -27,3 +27,7 @@ prometheus:
         cluster_id: kubecostProductConfigs_clusterName
   nodeExporter:
     enabled: false
+global:
+  grafana:
+    enabled: false # If false, Grafana will not be installed
+    proxy: false

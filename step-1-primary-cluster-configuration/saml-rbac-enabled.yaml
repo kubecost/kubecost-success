@@ -1,7 +1,6 @@
 # SAML integration for user management and RBAC, enterprise key required
 # Ref: https://github.com/kubecost/docs/blob/main/user-management.md
-global:
-  saml:
+saml:
   enabled: false
   secretName: "kubecost-authzero"
   #metadataSecretName: "kubecost-authzero-metadata" # One of metadataSecretName or idpMetadataURL must be set. defaults to metadataURL if set
