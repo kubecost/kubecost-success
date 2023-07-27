@@ -1,5 +1,4 @@
-global:
-  networkCosts:
+networkCosts:
   enabled: true
   config:
     services:
