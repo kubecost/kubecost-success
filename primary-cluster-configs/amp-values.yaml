@@ -1,0 +1,12 @@
+# Amazon Managed Service for Prometheus
+global:
+  amp:
+    enabled: false # If true, kubecost will be configured to remote_write and query from Amazon Managed Service for Prometheus.
+    prometheusServerEndpoint: https://localhost:8085/<workspaceId>/ # The prometheus service endpoint used by kubecost. The calls are forwarded through the SigV4Proxy side car to the AMP workspace.
+    remoteWriteService: https://aps-workspaces.us-west-2.amazonaws.com/workspaces/<workspaceId>/api/v1/remote_write # The remote_write endpoint for the AMP workspace.
+    sigv4:
+      region: us-west-2
+      # access_key: ACCESS_KEY # AWS Access key
+      # secret_key: SECRET_KEY # AWS Secret key
+      # role_arn: ROLE_ARN # AWS role arn
+      # profile: PROFILE # AWS profile
