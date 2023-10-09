@@ -1,7 +1,7 @@
 # SAML integration for user management and RBAC, enterprise key required
 # Ref: https://github.com/kubecost/docs/blob/main/user-management.md
 saml:
-  enabled: false
+  enabled: true 
   secretName: "kubecost-authzero"
   #metadataSecretName: "kubecost-authzero-metadata" # One of metadataSecretName or idpMetadataURL must be set. defaults to metadataURL if set
   idpMetadataURL: "https://dev-elu2z98r.auth0.com/samlp/metadata/c6nY4M37rBP0qSO1IYIqBPPyIPxLS8v2"
@@ -14,7 +14,7 @@ saml:
   # encryptionCertSecret: "kubecost-saml-cert" # k8s secret where the x509 certificate used to encrypt an Okta saml response is stored
   # decryptionKeySecret: "kubecost-sank-decryption-key" # k8s secret where the private key associated with the encryptionCertSecret is stored
   rbac:
-    enabled: false
+    enabled: true
     groups:
       - name: admin
         enabled: false # if admin is disabled, all SAML users will be able to make configuration changes to the kubecost frontend
