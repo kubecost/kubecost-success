@@ -1,4 +1,4 @@
-# kc-data-validation-tool
+# Data Audit via API Requests
 
 Provides various ways to do data auditing via the aws api and kubecost assets api to validate what's being emitted in Kubecost and in AWS Cost Explorer.
 
