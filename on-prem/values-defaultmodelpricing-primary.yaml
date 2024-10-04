@@ -12,7 +12,7 @@ kubecostProductConfigs:
 #   # configurations will have no effect on metrics emitted such as
 #   # `node_ram_hourly_cost` or `node_cpu_hourly_cost`.
 #   # Ref: https://docs.kubecost.com/install-and-configure/install/provider-installations/air-gapped
-#   customPricesEnabled: false
+# customPricesEnabled: true
 # defaultModelPricing:
 #   enabled: true
 #   CPU: "28.0"
@@ -35,7 +35,7 @@ federatedETL:
 kubecostAggregator:
   deployMethod: statefulset
   replicas: 1
-    
+
 prometheus:
   server:
     global:
