@@ -1,0 +1,31 @@
+kubecostProductConfigs:
+  # clustername should be unique for all clusters, must set this line and cluster_id below
+  clusterName: kubecostProductConfigs_clusterName
+  # productKey:
+  #   key: YOUR_KEY
+  #   enabled: true # product key is not needed for eval
+  cloudIntegrationSecret: cloud-integration # only required on primary cluster
+  azureOfferDurableID: MS-AZR-0003P # Be sure these values are set to reflect your bill data
+  azureBillingRegion: US # Be sure these values are set to reflect your bill data
+  currencyCode: USD # Be sure these values are set to reflect your bill data
+
+kubecostModel:
+  federatedStorageConfigSecret: kubecost-federated-store
+  
+federatedETL:
+  federatedCluster: true
+  
+prometheus:
+  server:
+    global:
+      external_labels:
+        # cluster_id should be unique for all clusters and the same value as .kubecostProductConfigs.clusterName
+        cluster_id: kubecostProductConfigs_clusterName
+  # Disable node exporter+service account if cluster/node rightsizing recommendations are not required
+  # Node-exporter must be disabled if there is an existing daemonset: https://guide.kubecost.com/hc/en-us/articles/4407601830679-Troubleshoot-Install#a-name-node-exporter-a-issue-failedscheduling-kubecost-prometheus-node-exporter
+  # nodeExporter:
+  #   enabled: false
+  # serviceAccounts:
+  #   nodeExporter:
+  #     create: false
+      

@@ -1,0 +1,26 @@
+kubecostProductConfigs:
+  # clustername should be unique for all clusters, must set this line and cluster_id below
+  clusterName: kubecostProductConfigs_clusterName
+  azureOfferDurableID: MS-AZR-0003P # Be sure these values are set to reflect your bill data
+  azureBillingRegion: US # Be sure these values are set to reflect your bill data
+  currencyCode: USD # Be sure these values are set to reflect your bill data
+
+federatedETL:
+  federatedCluster: true
+  agentOnly: true
+
+kubecostModel:
+  federatedStorageConfigSecret: kubecost-federated-store
+  
+global:
+  grafana:
+    enabled: false
+    proxy: false
+    
+prometheus:
+  server:
+    global:
+      external_labels:
+        # cluster_id should be unique for all clusters and the same value as .kubecostProductConfigs.clusterName
+        cluster_id: kubecostProductConfigs_clusterName
+    retention: 2d
