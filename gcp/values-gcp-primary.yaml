@@ -11,7 +11,11 @@ kubecostModel:
   
 federatedETL:
   federatedCluster: true
-  
+
+kubecostAggregator:
+  deployMethod: statefulset
+  replicas: 1
+    
 prometheus:
   server:
     global:
