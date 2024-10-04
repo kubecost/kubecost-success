@@ -1,7 +1,0 @@
-federatedETL:
-  useExistingS3Config: false
-  primaryCluster: true
-  federatedCluster: true
-  federator:
-    enabled: true
-    primaryClusterID: CLUSTER_NAME
