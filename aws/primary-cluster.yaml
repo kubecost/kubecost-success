@@ -1,0 +1,38 @@
+kubecostAggregator:
+  deployMethod: statefulset
+  
+kubecostProductConfigs:
+  clusterName: CLUSTER_NAME
+#  cloudIntegrationSecret: cloud-integration
+  productKey:
+    enabled: true
+    key: YOUR_KEY
+    
+federatedETL:
+  federatedCluster: true
+  
+kubecostModel:
+  federatedStorageConfigSecret: kubecost-federated-store
+  
+serviceAccount: 
+# This example has Kubecost create the service account + annotation. It does not automatically configure the role/ to trust the service account.
+# To use a dedicated service account, set create to false, remove the annotation, and specify the name of your dedicated service account. 
+  create: true
+  annotations: # Use the annotation for your cloud provider. This example uses AWS IAM Roles.
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/<roleName>
+ # name: kubecost-irsa-sa
+    
+global:
+  prometheus:
+    enabled: true
+    # fqdn: http://prometheus-operated.monitoring:9090
+    
+prometheus:
+  nodeExporter: # node exporter is disabled by default, enable if needed
+    enabled: false
+  server:
+    global:
+      external_labels:
+        # cluster_id should be unique for all clusters and the same value as .kubecostProductConfigs.clusterName
+        cluster_id: CLUSTER_NAME
+        

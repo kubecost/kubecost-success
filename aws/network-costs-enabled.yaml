@@ -1,0 +1,5 @@
+networkCosts:
+  enabled: true
+  config:
+    services:
+      amazon-web-services: true
