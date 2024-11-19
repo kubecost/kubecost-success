@@ -13,7 +13,11 @@ federatedETL:
   
 kubecostModel:
   federatedStorageConfigSecret: kubecost-federated-store
-  
+
+kubecostAggregator:
+  deployMethod: statefulset
+  replicas: 1
+    
 serviceAccount: 
 # This example has Kubecost create the service account + annotation. It does not automatically configure the role/ to trust the service account.
 # To use a dedicated service account, set create to false, remove the annotation, and specify the name of your dedicated service account. 
