@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo contains our recommended approach to accelerate time to value (TTV) with Kubecost. It also includes sample configurations to enhance our product and meet FinOps related goals.
+This repo contains our recommended approach to accelerate time to value (TTV) with Kubecost. It also includes template configurations to install and enhance Kubecost
 
 A detailed overview of available subscriptions options are [here](https://www.kubecost.com/pricing/).
 
