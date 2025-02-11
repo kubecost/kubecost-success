@@ -1,5 +1,7 @@
 # Deployment Checklist - AWS
 
+![Kubecost Enterprise Federation Architecture](./federation-architecture.png)
+
 It is recommended to deploy Kubecost Enterprise in this order to improve time to value. Configuring the AWS cloud integration will provide the most accurate data. Otherwise, it will default to on-demand public pricing and will not accurately reflect your AWS bill.
 
 ## Kubecost Installation
