@@ -1,3 +1,6 @@
+kubecostProductConfigs:
+  clusterName: CLUSTER_NAME
+  
 global:
   prometheus:
     enabled: true
@@ -6,9 +9,6 @@ global:
     enabled: false
     proxy: false
     
-kubecostProductConfigs:
-  clusterName: CLUSTER_NAME
-  
 federatedETL:
   federatedCluster: true
   agentOnly: true
