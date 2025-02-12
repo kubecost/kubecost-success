@@ -1,18 +1,28 @@
 # Deployment Checklist - AWS
 
+![Kubecost Enterprise Federation Architecture](/assets/kubecostv2-diagram.png)
+
 It is recommended to deploy Kubecost Enterprise in this order to improve time to value. Configuring the AWS cloud integration will provide the most accurate data. Otherwise, it will default to on-demand public pricing and will not accurately reflect your AWS bill.
 
 ## Kubecost Installation
 1. **Kubecost Installed on Primary Cluster**  
    - [Installation Guide](https://docs.kubecost.com/install-and-configure/install)  
-   - [Cost Analyzer Helm Chart Values](/aws/primary-cluster.yaml)
+
+   - [Minimal Install (No Federation)](/aws/aws-primary-minimal.yaml)
+
+   - [Enteprise Federation with IRSA](/aws/aws-primary-federation-irsa.yaml)
+
+   - [Enteprise Federation no IRSA](/aws/aws-primary-federation-no-irsa.yaml)
 
 2. **Cloud Cost Integration Configured**  
-   - [AWS Cloud Integration](https://docs.kubecost.com/install-and-configure/install/cloud-integration/aws-cloud-integrations)  
+   - [AWS Cloud Integration](https://docs.kubecost.com/install-and-configure/install/cloud-integration/aws-cloud-integrations) 
+
    - [Cloud Integration Config File](/aws/cloud-integration.json)
 
 3. **Kubecost Installed on Secondary Cluster(s)**  
-   - [ETL Federation Aggregator Configuration](/aws/secondary-cluster.yaml)
+   - [ETL Federation Aggregator Configuration no IRSA](/aws/aws-secondary-no-irsa.yaml)
+
+   - [ETL Federation Aggregator Configuration with IRSA](/aws/aws-secondary-irsa.yaml)
 
 ## Optional Configuration
 4. **Network Costs Daemonset Configured**  

@@ -1,3 +1,6 @@
+kubecostProductConfigs:
+  clusterName: CLUSTER_NAME
+  
 global:
   prometheus:
     enabled: true
@@ -6,15 +9,12 @@ global:
     enabled: false
     proxy: false
     
-kubecostProductConfigs:
-  clusterName: CLUSTER_NAME
-  
 federatedETL:
   federatedCluster: true
   agentOnly: true
   
 kubecostModel:
-  federatedStorageConfigSecret: kubecost-federated-store
+  federatedStorageConfigSecret: federated-store
   
 serviceAccount: 
 # This example has Kubecost create the service account + annotation. It does not automatically configure the role/ to trust the service account.
