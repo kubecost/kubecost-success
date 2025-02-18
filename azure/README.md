@@ -1,5 +1,7 @@
 # Deployment Checklist - Azure
 
+![Kubecost Enterprise Federation Architecture](/assets/azurediagramv2.png)
+
 It is recommended to deploy Kubecost Enterprise in this order. Configuring the Azure cloud integration will provide the most accurate data. Otherwise, it will default to predefined pricing and will not accurately reflect your Azure bill.
 
 ## Provision dependencies for Kubecost
