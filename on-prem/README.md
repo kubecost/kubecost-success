@@ -4,54 +4,32 @@
 
 This guide provides step-by-step instructions for deploying Kubecost in an on-premises environment. Choose the deployment option that best fits your infrastructure requirements.
 
-## Deployment Options
+## Prerequisites
 
-### Option 1: Single Cluster Deployment
+1. **Prepare Air-Gapped Environment**
+   - [ ] Set up private container registry
+   - [ ] Download and push Kubecost images
+   - [ ] Configure Helm repository mirror
 
-![CSV in Central Object Store](/assets/onprem-single.png)
+2. **Configure Storage**
+   - [ ] Set up internal object storage
+   - [ ] Create access credentials (IAM User/IRSA and [Policy](/aws/aws-attach-roles/iam-access-cur-in-payer-account.json))
+   - [ ] Apply storage configuration
 
-1. **Prepare Storage Backend**
-   - [ ] Configure persistent storage for Prometheus
-   - [ ] Set up object storage for long-term metrics & CSV pricing data
-
-   
-2. **Install Kubecost**
-   - [ ] Create namespace
-   ```bash
-   kubectl create namespace kubecost
-   ```
-   - [ ] Create node pricing using CSV template
-         CSV template found [here](/onprem/custom-pricing.csv)
-   ```bash
-   kubectl create configmap csv-pricing --from-file custom-pricing.csv -n kubecost
-   ```
-
-   - [ ] Apply Helm values
-   ```bash
-   helm upgrade --install kubecost \
-     --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
-     --namespace kubecost \
-     --values values-single-cluster-csv-pricing.yaml
-   ```
-
-3. **Configure Access**
-   - [ ] Set up ingress or port-forwarding
-   - [ ] Configure authentication (optional)
-
-### Option 2: Multi-Cluster Federation with CSV Pricing (Air-Gapped Environment)
+### Option 1: Multi-Cluster Federation with CSV Pricing (Air-Gapped Environment)
 
 ![Multi-Cluster Federation](/assets/onpremdiagram-option1.png)
 
 1. **Set Up Shared Storage**
-   - [ ] Configure object storage backend
-   - [ ] Create access credentials (IAM User/IRSA and [Policy](/aws/aws-attach-roles/iam-access-cur-in-payer-account.json))
-   - [ ] Create secret for object storage
+   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
    kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
    ```
 
 2. **Primary Cluster Installation**
-   - [ ] Install Kubecost with federation enabled
+   - [ ] Install Kubecost using [primary values file](/on-prem/values-defaultmodelpricing-primary.yaml) with federation enabled.
+
    ```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
@@ -61,7 +39,13 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    - [ ] Verify ETL pipeline is working
 
 3. **Secondary Clusters Installation**
-   - [ ] Install Kubecost on secondary clusters
+   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Create secret for object storage in Kubecost namespace.
+   ```bash
+   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   ```
+   - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-csv-custom-pricing-secondary.yaml).
+
    ```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
@@ -70,39 +54,41 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    ```
    - [ ] Verify data is being sent to primary cluster
 
-### Option 3: Default Model Pricing
+### Option 2: Default Model Pricing
 
 ![Default Model Pricing](/assets/onpremdiagram-option3.png)
-
-1. **Prepare Air-Gapped Environment**
-   - [ ] Set up private container registry
-   - [ ] Download and push Kubecost images
-   - [ ] Configure Helm repository mirror
-
-2. **Configure Storage**
-   - [ ] Set up internal object storage
-   - [ ] Create access credentials
-   - [ ] Apply storage configuration
-
-3. **Install Kubecost**
-   - [ ] Create custom values file with air-gapped settings
-   - [ ] Install using local resources
+   - [ ] Create access credentials 
+   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Create secret for object storage in Kubecost namespace.
+   ```bash
+   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   ```
+1. **Install Kubecost on primary**
+   - [ ] Install using [primary values file template](/on-prem/values-defaultmodelpricing-primary.yaml) with federation enabled for long term ETL storage. 
    ```bash
    helm upgrade --install kubecost \
      --repo http://internal-helm-repo/charts/ cost-analyzer \
      --namespace kubecost \
-     --values values-air-gapped.yaml
+     --values values-defaultmodelpricing-primary.yaml
    ```
 
-## Optional Configurations
-
-### Network Costs Monitoring
-- [ ] Enable Network Costs DaemonSet
-- [ ] Configure network topology
+2. **Secondary Clusters Installation**
+   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Create secret for object storage in Kubecost namespace.
+   ```bash
+   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   ```
+   - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-defaultmodelpricing-primary.yaml).
+   ```bash
+   helm upgrade --install kubecost \
+     --repo http://internal-helm-repo/charts/ cost-analyzer \
+     --namespace kubecost \
+     --values values-defaultmodelpricing-primary.yaml
+   ```
 
 ### Authentication & Authorization
-- [ ] Configure SSO/SAML
-- [ ] Set up RBAC policies
+- [ ] [Configure SSO/SAML](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
+- [ ] [Set up RBAC policies](https://docs.kubecost.com/using-kubecost/navigating-the-kubecost-ui/teams)
 
 ### Alerting & Reporting
 - [ ] Configure Slack/Teams integration
