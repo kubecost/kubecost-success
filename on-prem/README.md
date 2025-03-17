@@ -1,4 +1,4 @@
-# Kubecost On-Premises Deployment Guide
+# Kubecost On-Premises Deployment Guide (Self-hosted)
 
 ![Kubecost Enterprise Architecture](/assets/onpremdiagram-option1.png)
 
