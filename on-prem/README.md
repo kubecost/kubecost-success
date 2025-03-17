@@ -38,7 +38,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    - [ ] Set up ingress or port-forwarding
    - [ ] Configure authentication (optional)
 
-### Option 2: Multi-Cluster Federation with CSV Pricing (Included Air-Gapped Environment)
+### Option 2: Multi-Cluster Federation with CSV Pricing (Air-Gapped Environment)
 
 ![Multi-Cluster Federation](/assets/onpremdiagram-option1.png)
 
