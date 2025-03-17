@@ -4,7 +4,6 @@ kubecostProductConfigs:
   # productKey:
   #   secretname: productkey
   #   enabled: false #not needed for eval
-  cloudIntegrationSecret: cloud-integration # only runs on primary cluster
 #    Enabling customPricesEnabled and defaultModelPricing instructs Kubecost to
 #   # use these custom monthly resource prices when reporting node costs. Note,
 #   # that the below configuration is for the monthly cost of the resource.
