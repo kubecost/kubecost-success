@@ -40,7 +40,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 ### Option 2: Multi-Cluster Federation with CSV Pricing (Included Air-Gapped Environment)
 
-![Multi-Cluster Federation](/assets/onprem-diagram-option1.png)
+![Multi-Cluster Federation](/assets/onpremdiagram-option1.png)
 
 1. **Set Up Shared Storage**
    - [ ] Configure object storage backend
