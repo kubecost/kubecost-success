@@ -72,7 +72,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 ### Option 3: Default Model Pricing
 
-![Air-Gapped Deployment](/assets/onpremdiagram-option3.png)
+![Default Model Pricing](/assets/onpremdiagram-option3.png)
 
 1. **Prepare Air-Gapped Environment**
    - [ ] Set up private container registry
