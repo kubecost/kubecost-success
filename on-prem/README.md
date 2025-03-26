@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 ![Multi-Cluster Federation](/assets/onpremdiagram-option1.png)
 
 1. **Set Up Shared Storage**
-   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
    kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
@@ -39,10 +39,10 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    - [ ] Verify ETL pipeline is working
 
 3. **Secondary Clusters Installation**
-   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
    ```
    - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-csv-custom-pricing-secondary.yaml).
 
@@ -58,10 +58,10 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 ![Default Model Pricing](/assets/onpremdiagram-option3.png)
    - [ ] Create access credentials 
-   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
    ```
 1. **Install Kubecost on primary**
    - [ ] Install using [primary values file template](/on-prem/values-defaultmodelpricing-primary.yaml) with federation enabled for long term ETL storage. 
@@ -73,10 +73,10 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    ```
 
 2. **Secondary Clusters Installation**
-   - [ ] Configure [object-store.yaml](/on-prem/object-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
+   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
    ```
    - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-defaultmodelpricing-primary.yaml).
    ```bash
