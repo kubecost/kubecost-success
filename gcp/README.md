@@ -6,9 +6,9 @@ This guide provides step-by-step instructions for deploying Kubecost in GCP.
 
 ## Prerequisites
 1. **Configure GCP Cloud Integration**
-   - [ ] [Create API Key](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integration-accessing-kubecost-gcp-workload-identity#ariaid-title3)
-   - [ ] [Configure Workload Identity](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integration-accessing-kubecost-gcp-workload-identity#ariaid-title4)
-   - [ ] [Update IAM Service Account](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integration-accessing-kubecost-gcp-workload-identity#ariaid-title5)
+   - [ ] [Enable Billing billing data export](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-gcp-cloud-integration#ariaid-title2)
+   - [ ] [Create a GCP service account](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-gcp-cloud-integration#ariaid-title3)
+   - [ ] [Connect using Workload Identity Federation](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-gcp-cloud-integration#ariaid-title5)
 
 
 2. **Configure Storage for Cluster Metrics**
