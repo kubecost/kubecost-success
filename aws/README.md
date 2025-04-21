@@ -5,25 +5,15 @@
 It is recommended to deploy Kubecost Enterprise in this order to improve time to value. Configuring the AWS cloud integration will provide the most accurate data. Otherwise, it will default to on-demand public pricing and will not accurately reflect your AWS bill.
 
 ## Prerequisites
-![Alternative CUR Integrations](/assets/cur-alternatives.png)
-
-
 1. - [ ] [Generate AWS CUR](https://docs.aws.amazon.com/cur/latest/userguide/cur-create.html) 
 
 2. - [ ] Set up a dedicated s3 object store for cluster metrics
    - [ ] [Create storage policy](/aws/aws-attach-roles/iam-kubecost-metrics-s3-policy.json)
 
-
-2. - [ ] Set up a dedicated s3 object store for athena query results
+3. - [ ] Set up a dedicated s3 object store for athena query results
    - [ ] [Create storage policy based on set up](/aws/aws-attach-roles)
 
-
-3. - [ ] Set up a dedicated s3 object store for cluster metrics
-   - [ ] [Create storage policy](/aws/aws-attach-roles/iam-kubecost-metrics-s3-policy.json)
-
 ## Kubecost Installation - Choose appropriate option.
-
-## Kubecost Installation
 
 1. **Kubecost Installed on Primary Cluster**  
    - [Installation Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=installation-kubecost-v2-installupgrade)  
@@ -69,9 +59,3 @@ It is recommended to deploy Kubecost Enterprise in this order to improve time to
 
    **Option C: Team Management**
    - [Minimal Install (No Federation)](/aws/aws-primary-minimal.yaml)
-
-   **Option B: Enterprise with IRSA**
-   - [Enteprise Federation with IRSA/EKS Pod Identities](/aws/aws-primary-federation-irsa.yaml)
-
-   **Option C: Enterprise without IRSA**
-   - [Enteprise Federation no IRSA](/aws/aws-primary-federation-no-irsa.yaml)
