@@ -1,0 +1,5 @@
+kubecostProductConfigs:
+  savingsRecommendationsNodegroupCustomLabels: # Define select list of labels to be used to identify node groups
+#   Azure: ["custom-azure-node-group-label"]
+#   GCP: ["customer-gcp-node-group-label"]
+#   Azure: ["custom-azure-node-group-label"]
