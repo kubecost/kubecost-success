@@ -8,10 +8,14 @@ import requests
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 import sys
+import argparse
 
-def get_kubecost_data():
+def get_kubecost_data(kubecost_url):
     """
     Query Kubecost API for allocation data from 2 days ago
+    
+    Args:
+        kubecost_url (str): The Kubecost URL (without protocol)
     """
     
     # Calculate the date 2 days ago
@@ -24,7 +28,7 @@ def get_kubecost_data():
     window = f"{start_time},{end_time}"
     
     # Base URL
-    base_url = "https://$kubecostURL/model/allocation/summary"
+    base_url = f"https://{kubecost_url}/model/allocation/summary"
     
     # Query parameters
     params = {
@@ -82,11 +86,24 @@ def main():
     """
     Main function to execute the Kubecost API query
     """
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Query Kubecost API for allocation data')
+    parser.add_argument('kubecost_url', nargs='?', help='Kubecost URL (without protocol)')
+    args = parser.parse_args()
+    
+    # Check if URL was provided
+    if not args.kubecost_url:
+        print("Error: Kubecost URL is required")
+        print("Usage: python allocation-query-reconciled-csv.py <kubecost_url>")
+        print("Example: python allocation-query-reconciled-csv.py kubecost.example.com")
+        sys.exit(1)
+    
     print("Kubecost API Query Script")
     print("=" * 50)
+    print(f"Using Kubecost URL: {args.kubecost_url}")
     
     # Execute the API query
-    result = get_kubecost_data()
+    result = get_kubecost_data(args.kubecost_url)
     
     if result is not None:
         print("\n" + "=" * 50)
