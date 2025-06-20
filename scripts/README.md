@@ -109,5 +109,3 @@ Detailed description of what the script does, how it works, and any important in
 ## Support
 
 For issues with these scripts, please contact the Kubecost team or file an issue in the repository.
-
-// Made with Bob
