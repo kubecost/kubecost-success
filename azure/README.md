@@ -8,7 +8,7 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
 1. **Create storage account to store all clusters ETL data in central object-store**
 
-   - [ ] [Provision a storage account in Azure to store all clusters ETLs](https://docs.kubecost.com/install-and-configure/install/multi-cluster/long-term-storage-configuration/long-term-storage-azure)
+   - [ ] [Provision a storage account in Azure to store all clusters ETLs](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-azure-multi-cluster-storage)
      
    - [ ] Create a secret from the [object-store.yaml](/azure/object-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
 
@@ -18,7 +18,7 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
 2. **Generate Azure cost export for the cloud integration**
 
-   - [ ] [Export Azure cost report](https://docs.kubecost.com/install-and-configure/install/cloud-integration/azure-out-of-cluster#step-1-export-azure-cost-report)
+   - [ ] [Export Azure cost report](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-azure-cloud-billing-integration#ariaid-title2)
 
    - [ ] [Provide Access to Storage API using Access Key](/azure/cloud-integration.json)
 
@@ -42,7 +42,7 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
        --namespace kubecost - values-azure-primary.yaml
        ```
 
-   - [ ] Check [Installation Guide Reference](https://docs.kubecost.com/install-and-configure/install)  
+   - [ ] Check [Installation Guide Reference](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=installation-kubecost-v2-installupgrade)  
 
 5. **Install Kubecost on Secondary Cluster(s)**  
 
@@ -60,10 +60,10 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
 Please Note: The network cost daemonset is not recommended for large environments where there are several hundred thousand or more unique containers running per day. 
 
-   - [ ] Review [Configuration Guide](https://docs.kubecost.com/install-and-configure/advanced-configuration/network-costs-configuration)
+   - [ ] Review [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-network-cost)
    - [ ] Apply [Network Cost Config](/azure/network-costs-enabled.yaml)
 
 7. **SSO/SAML Enabled**
-   - [ ] Review [SSO Documentation](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
+   - [ ] Review [SSO Documentation](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-user-management-ssooidc)
    - [ ] Configure [OIDC](/custom/oidc-rbac.yaml)
    - [ ] Configure [SAML](/custom/saml-rbac-enabled.yaml)
