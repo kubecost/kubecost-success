@@ -1,0 +1,10 @@
+# values.yaml
+oidc:
+  enabled: true
+  useIDToken: true
+  clientID: "{APPLICATION_CLIENT_ID}"
+  clientSecret: "{CLIENT_SECRET_VALUE}"
+  secretName: "kubecost-oidc-secret"
+  authURL: "https://login.microsoftonline.com/{YOUR_TENANT_ID}/oauth2/v2.0/authorize?client_id={YOUR_CLIENT_ID}&response_type=code&scope=openid&nonce=123456"
+  loginRedirectURL: "https://{YOUR_KUBECOST_DOMAIN}/oidc/authorize"
+  discoveryURL: "https://login.microsoftonline.com/{YOUR_TENANT_ID}/v2.0/.well-known/openid-configuration"pecified in the hd claim of the provider ID token
