@@ -29,7 +29,7 @@ pricingCsv:
     # provider: "AWS"
     # region: "us-east-1"
     # URI: s3://kc-csv-test/pricing_schema.csv # a valid file URI
-    # csvAccessCredentials: pricing-schema-access-secret
+    csvAccessCredentials: "" # leave value set to empty string when not using a CSV pricing access secret
 
 # when using configmap: kubectl create configmap -n kubecost csv-pricing --from-file custom-pricing.csv
 extraVolumes:
