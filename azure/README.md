@@ -38,7 +38,7 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
        ```bash
        helm upgrade --install kubecost \
-       --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
+       --repo https://kubecost.github.io/cost-analyzer/ kubecost \
        --namespace kubecost - values-azure-primary.yaml
        ```
 
