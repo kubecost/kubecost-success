@@ -10,10 +10,10 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
    - [ ] [Provision a storage account in Azure to store all clusters ETLs](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-azure-multi-cluster-storage)
      
-   - [ ] Create a secret from the [object-store.yaml](/azure/object-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
+   - [ ] Create a secret from the [federated-store.yaml](/azure/federated-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
 
        ```bash
-       kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+       kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
        ```
 
 2. **Generate Azure cost export for the cloud integration**
@@ -32,27 +32,35 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
 ## Kubecost Installation
 
-3. **Install Kubecost on Primary Cluster**  
+3. **Install Kubecost on Primary Cluster (Skip this step if you're on Kubecost Cloud)**  
 
-   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with custom values configured. Set Values.kubecostProductConfigs.clusterName and 
+   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with custom values configured. 
 
        ```bash
        helm upgrade --install kubecost \
        --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
-       --namespace kubecost - values-azure-primary.yaml
+       --namespace kubecost -f values-azure-primary.yaml
        ```
 
    - [ ] Check [Installation Guide Reference](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=installation-kubecost-v2-installupgrade)  
 
 5. **Install Kubecost on Secondary Cluster(s)**  
 
-   - [ ] Create a secret from the [object-store.yaml](/azure/object-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
+   - [ ] Create a secret from the [federated-store.yaml](/azure/federated-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
 
        ```bash
-       kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+       kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
        ```
 
-   - [ ] Configure [ETL Federation Aggregator](/azure/secondary-cluster.yaml)
+   - [ ] Configure [ETL Federation Aggregator](/azure/values-azure-secondary.yaml)
+
+   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with custom values configured. 
+
+      ```bash
+       helm upgrade --install kubecost \
+       --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
+       --namespace kubecost -f values-azure-secondary.yaml
+       ```
 
 ## Optional Configuration
 
