@@ -6,13 +6,6 @@ global:
 
 finops-agent:
   enabled: true
-  agent:
-    collectorDataSource:
-      retention1d: 1
-    exportIntervals:
-      allocation: 14d
-      asset: 14d
-      networkInsight: 14d
 aggregator:
   enabled: false
 frontend:
