@@ -15,8 +15,8 @@ global:
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
   #cloudIntegrationSecret: cloud-integration # only runs on primary cluster
   cicd:
-      enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
-      skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
+    enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
+    skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
 ## Values for the finops-agent sub-chart
 ## Ref: https://github.com/kubecost/finops-agent-chart/
 ##
