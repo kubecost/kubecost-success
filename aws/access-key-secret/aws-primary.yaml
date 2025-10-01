@@ -1,0 +1,72 @@
+## Kubecost configuration
+global:
+  ## @param clusterId The id of the cluster REQUIRED
+  ##
+  clusterId: CLUSTER_NAME
+  ## @param global.federatedStorage.config The config for the federated storage
+  ## @param global.federatedStorage.existingSecret The name of an existing secret to use for the federated storage config. Note, you cannot set both `config` and `existingSecret`.
+  ## The name of the Secret containing a bucket config for federated storage.
+  ## The contents should be stored under a key named storage-config.yaml by default.
+  ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
+  federatedStorage:
+    config: ""
+  #   enabled: false #not needed for eval
+  # If you want to use a different file name for the federated storage config, you can set the fileName value.
+  # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
+  
+  cicd:
+    enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
+    skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
+
+  ## @param global.acknowledged Acknowledgment flag for Kubecost 3.0 major upgrade
+  ## REQUIRED FOR ENTERPRISE: Kubecost 3.0 introduces breaking changes and potential data disruption
+  ## risks. Review release notes and migration guide before proceeding.
+  ## Ref: https://github.com/kubecost/kubecost/releases
+  acknowledged: true
+## Kubecost Cloud Cost Pod
+## Processes cloud billing data and pushes CloudCost ETL data to the Federated Storage Bucket.
+##
+cloudCost:
+  enabled: false
+# cloudIntegrationSecret: cloud-integration # only runs on primary cluster  
+
+## Values for the finops-agent sub-chart
+## Ref: https://github.com/kubecost/finops-agent-chart/
+##
+finops-agent:
+  enabled: true
+  agent:
+    collectorDataSource:
+      enabled: true
+      scrapeInterval: 30s
+      networkPort: 3001
+      retention10m: 6
+      retention1h: 3
+      retention1d: 2
+    exporter:
+      emissionInterval: 1m
+networkCosts:
+  enabled: false
+forecasting:
+  enabled: false
+clusterController:
+  enabled: false
+frontend:
+  enabled: false
+aggregator:
+  enabled: false
+cloudCost:
+  enabled: false
+kubecostProductConfigs:
+  productKey:
+    enabled: false
+    key: ""
+    secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
+    mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
+## Kubecost Local Store
+## When no federated storage bucket is configured, localStore provides local storage via a
+## container, PVC, and service for agent and aggregator communication.
+##
+localStore:
+  enabled: true
+  
