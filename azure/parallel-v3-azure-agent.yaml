@@ -10,10 +10,20 @@ global:
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
+
+# PART 1
+# Install Kubecost v3 with long export intervals, effectively delaying any writes to the bucket.
 finops-agent:
   enabled: true
-aggregator:
-  enabled: false
+  agent:
+    exportIntervals:
+      allocation: 14d
+      asset: 14d
+      networkInsight: 14d
+# PART 2: Run across at least two UTC midnights (00:00 UTC)
+# Set the exportIntervals back to their default values, by removing the override config.
+finops-agent:
+  enabled: true
 frontend:
   enabled: false
 clusterController:
@@ -26,7 +36,6 @@ localStore:
   enabled: false
 networkCosts:
   enabled: false
-
 kubecostProductConfigs:
   azureOfferDurableID: MS-AZR-0003P # Be sure these values are set to reflect your bill data
   azureBillingRegion: US # Be sure these values are set to reflect your bill data
