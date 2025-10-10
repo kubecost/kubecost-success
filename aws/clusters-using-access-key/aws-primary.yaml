@@ -29,6 +29,51 @@ global:
 cloudCost:
   enabled: false
 # cloudIntegrationSecret: cloud-integration # only runs on primary cluster  
+  image:
+    registry: ""  # Default is "icr.io"
+    repository: kubecost/cost-model
+    tag: ""  # Default is to match the Chart.AppVersion
+  fullImageName: ""  # Overrides the default image construction logic.
+  imagePullPolicy: IfNotPresent
+aggregator:
+  enabled: true
+  image:
+    registry: ""  # Default is "icr.io"
+    repository: kubecost/cost-model
+    tag: ""  # Default is to match the Chart.AppVersion
+  fullImageName: ""  # Overrides the default image construction logic.
+  imagePullPolicy: IfNotPresent
+  ## Retention values determine for what duration into the past data cloud billing data will be
+  ## queried and processed into ETL.
+  retention1d: 91
+
+  ## Retention values determine for what duration into the past data will be
+  ## ingested into Aggregator's database
+  retention1d: 91
+  retention1h: 49
+  retention10m: 36
+  persistentConfigsStorage:
+    storageClass: ""  # default storage class
+    storageRequest: 1Gi
+  aggregatorDbStorage:
+    storageClass: ""  # default storage class
+    storageRequest: 128Gi
+  resources:
+    limits: {}
+      # memory: ""
+      # cpu: ""
+    requests:
+      memory: 3Gi
+      cpu: 100m
+
+## Kubecost Multi-cluster Diagnostics
+## A single view into the health of all agent clusters. Each agent cluster sends
+## its diagnostic data to a storage bucket.
+## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-multi-diagnostics
+## retention: deletes data beyond specified retention period
+diagnostics:
+  enabled: true
+  retention: 30d
 
 ## Values for the finops-agent sub-chart
 ## Ref: https://github.com/kubecost/finops-agent-chart/
@@ -50,23 +95,16 @@ networkCosts:
 forecasting:
   enabled: false
 clusterController:
-  enabled: false
-frontend:
-  enabled: false
-aggregator:
-  enabled: false
-cloudCost:
-  enabled: false
 kubecostProductConfigs:
   productKey:
     enabled: false
     key: ""
     secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
     mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
+    
 ## Kubecost Local Store
 ## When no federated storage bucket is configured, localStore provides local storage via a
 ## container, PVC, and service for agent and aggregator communication.
 ##
 localStore:
   enabled: true
-  
