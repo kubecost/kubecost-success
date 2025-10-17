@@ -1,0 +1,21 @@
+kind: Kubecost
+apiVersion: charts.kubecost.com/v1
+metadata:
+  name: kubecost-sample
+  namespace: kubecost
+spec:
+  global:
+    clusterId: SET_A_UNIQUE_CLUSTER_ID_HERE
+    platforms:
+      openshift:
+        enabled: true
+        route:
+          annotations: {}
+          enabled: false
+        scc:
+          clusterController: true
+          networkCosts: true
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
