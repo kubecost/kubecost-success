@@ -2,11 +2,11 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: kubecost-operator
-  namespace: kubecost1
+  namespace: kubecost
 spec:
   channel: stable
   name: kubecost-operator
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: kubecost-operator.v3.0.0
+  startingCSV: kubecost-operator.v3.0.2
   installPlanApproval: Automatic
