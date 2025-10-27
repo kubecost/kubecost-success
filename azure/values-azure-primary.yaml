@@ -95,6 +95,7 @@ networkCosts:
 forecasting:
   enabled: false
 clusterController:
+  enabled: false
 kubecostProductConfigs:
   productKey:
     enabled: false
