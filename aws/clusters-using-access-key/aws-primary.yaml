@@ -13,10 +13,10 @@ global:
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
-  
-  cicd:
-    enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
-    skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
+  platforms: 
+    cicd:
+      enabled: true  # Set to true when using affected CI/CD tools for access to the below configuration options.
+      skipSanityChecks: true  # If true, skip all sanity/existence checks for resources like Secrets.
 
   ## @param global.acknowledged Acknowledgment flag for Kubecost 3.0 major upgrade
   ## REQUIRED FOR ENTERPRISE: Kubecost 3.0 introduces breaking changes and potential data disruption
@@ -95,6 +95,7 @@ networkCosts:
 forecasting:
   enabled: false
 clusterController:
+  enabled: false
 kubecostProductConfigs:
   productKey:
     enabled: false
