@@ -10,27 +10,35 @@ global:
   ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
   federatedStorage:
     config: ""
-  #   enabled: false #not needed for eval
-  # If you want to use a different file name for the federated storage config, you can set the fileName value.
+    # A federated storage config can be provided via an existingSecret or via a string in helm values.
+    # If both are provided, the string in helm values take precedence.
+    existingSecret: ""
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
   #cloudIntegrationSecret: cloud-integration # only runs on primary cluster
-  cicd:
-    enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
-    skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
+  platform:
+    cicd:
+      enabled: true  # Set to true when using affected CI/CD tools for access to the below configuration options.
+      skipSanityChecks: true  # If true, skip all sanity/existence checks for resources like Secrets.
 ## Values for the finops-agent sub-chart
 ## Ref: https://github.com/kubecost/finops-agent-chart/
 ##
-finops-agent:
+finopsagent:
   enabled: true
+  # serviceAccount:
+  #   create: true
+  #   name: finops-agent
   agent:
     collectorDataSource:
       enabled: true
       scrapeInterval: 30s
-      networkPort: 3001
+      ## Retention values are for the agent's local store only and do not affect Kubecost history.
+      ## These can be increased, but will require more memory.
       retention10m: 6
       retention1h: 3
       retention1d: 2
     exporter:
+      ## Emission interval is the interval at which the agent will emit metrics to the object storage.
+      ## This can be increased to reduce the number of object (versions) written to the object storage when versioning is enabled.
       emissionInterval: 1m
 networkCosts:
   enabled: false
