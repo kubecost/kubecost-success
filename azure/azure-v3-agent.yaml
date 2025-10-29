@@ -1,0 +1,46 @@
+global:
+  clusterId: CLUSTER_NAME #REQUIRED
+  ## @param global.federatedStorage.config The config for the federated storage
+  ## @param global.federatedStorage.existingSecret The name of an existing secret to use for the federated storage config. Note, you cannot set both `config` and `existingSecret`.
+  ## The name of the Secret containing a bucket config for federated storage.
+  ## The contents should be stored under a key named storage-config.yaml by default.
+  ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
+  federatedStorage:
+    config: ""
+    # A federated storage config can be provided via an existingSecret or via a string in helm values.
+    # If both are provided, the string in helm values take precedence.
+    existingSecret: ""
+finopsagent:
+  enabled: true
+  # serviceAccount:
+  #   create: true
+  #   name: finops-agent
+  agent:
+    collectorDataSource:
+      enabled: true
+      scrapeInterval: 30s
+      ## Retention values are for the agent's local store only and do not affect Kubecost history.
+      ## These can be increased, but will require more memory.
+      retention10m: 6
+      retention1h: 3
+      retention1d: 2
+    exporter:
+      ## Emission interval is the interval at which the agent will emit metrics to the object storage.
+      ## This can be increased to reduce the number of object (versions) written to the object storage when versioning is enabled.
+      emissionInterval: 1m
+frontend:
+  enabled: false
+clusterController:
+  enabled: false
+cloudCost:
+  enabled: false
+forecasting:
+  enabled: false
+localStore:
+  enabled: false
+networkCosts:
+  enabled: false
+kubecostProductConfigs:
+  azureOfferDurableID: MS-AZR-0003P # Be sure these values are set to reflect your bill data
+  azureBillingRegion: US # Be sure these values are set to reflect your bill data
+  currencyCode: USD # Be sure these values are set to reflect your bill data
