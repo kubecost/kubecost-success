@@ -13,6 +13,8 @@ global:
 
 # PART 1
 # Install Kubecost v3 with long export intervals, effectively delaying any writes to the bucket.
+# PART 2: Run across at least two UTC midnights (00:00 UTC)
+# Set the exportIntervals back to their default values, by removing the override config.
 finops-agent:
   enabled: true
   agent:
@@ -20,8 +22,6 @@ finops-agent:
       allocation: 14d
       asset: 14d
       networkInsight: 14d
-# PART 2: Run across at least two UTC midnights (00:00 UTC)
-# Set the exportIntervals back to their default values, by removing the override config.
 finops-agent:
   enabled: true
 frontend:
