@@ -7,6 +7,9 @@ spec:
   global:
     clusterId: SET_A_UNIQUE_CLUSTER_ID_HERE
     platforms:
+      cicd:
+        enabled: true
+        skipSanityChecks: true
       openshift:
         enabled: true
         route:
@@ -15,9 +18,6 @@ spec:
         scc:
           clusterController: true
           networkCosts: true
-      cicd:
-        enabled: false  # Set to true when using affected CI/CD tools for access to the below configuration options.
-        skipSanityChecks: false  # If true, skip all sanity/existence checks for resources like Secrets.
         securityContext:
           runAsNonRoot: true
           seccompProfile:
