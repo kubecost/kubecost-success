@@ -7,9 +7,12 @@ global:
   ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
   federatedStorage:
     config: ""
+    existingSecret: federated-store  
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
+serviceAccount:
+  name: kubecost-finops-agent
 finops-agent:
   enabled: true
 ## Service Account for IBM FinOps Agent
@@ -19,10 +22,10 @@ finops-agent:
 ## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
 ## @param serviceAccount.annotations Additional custom annotations for the ServiceAccount      
   serviceAccount:
-    create: true
-    name: ""
-    automountServiceAccountToken: true
-    annotations: {}  
+    create: false
+    name: "kubecost-finops-agent"
+    annotations: # Use the annotation for your cloud provider. This example uses AWS IAM Roles.
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/<roleName>
 aggregator:
   enabled: false
 frontend:
