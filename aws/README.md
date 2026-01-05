@@ -27,7 +27,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
-     --values aws-primary-federation-irsa.yaml
+     -f aws-primary-federation-irsa.yaml
 ```
    - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
@@ -37,7 +37,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
-     --values aws-primary.yaml
+     -f aws-primary.yaml
 ```
 
 2. **Cloud Cost Integration Configured**  
@@ -56,7 +56,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
-     --values aws-kubecost-agent-irsa.yaml
+     -f aws-kubecost-agent-irsa.yaml
 ```
 
    ***Option B: Using Access Key and Secret***
@@ -66,7 +66,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
-     --values aws-kubecost-agent.yaml
+     -f aws-kubecost-agent.yaml
 ```
 ## Optional Configuration
 4. **Network Costs Daemonset Configured**  
