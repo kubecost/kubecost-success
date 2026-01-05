@@ -16,8 +16,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 2. **Configure Storage**
    - [ ] Set up internal object storage
-   - [ ] Create access credentials (IAM User and [Policy](/aws/aws-attach-roles/iam-access-cur-in-payer-account.json))
-   - [ ] Generate Credentials (access key & secret)
+   - [ ] Generate Credentials (access key & secret). [Policy example](/aws/aws-attach-roles/iam-kubecost-metrics-s3-policy.json)
    - [ ] Apply storage configuration
 
 ## Multi-Cluster Federation with Enterprise Custom Pricing (Air-Gapped/Private Cloud/On-prem Environment)
