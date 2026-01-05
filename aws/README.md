@@ -23,22 +23,22 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    ***Option A: Enterprise with IRSA/EKS Pod Identities***
    - [ ] [Enteprise Federation with IRSA/EKS Pod Identities](/aws/clusters-using-irsa-eks-pod-identities/aws-primary-federation-irsa.yaml)
    
-   ```bash
+```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
      --values aws-primary-federation-irsa.yaml
-   ```
+```
    - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
    ***Option B: Using Access Key and Secret***
    - [ ] [Enteprise Federation no IRSA](/aws/clusters-using-access-key/aws-primary.yaml)
-      ```bash
+```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
      --values aws-primary.yaml
-   ```
+```
 
 2. **Cloud Cost Integration Configured**  
    - [ ] [AWS Cloud Integration](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-aws-cloud-billing-integration) 
@@ -52,22 +52,22 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
    ***Option A: With IRSA/EKS Pod Identities***
    - [ ] [ETL Federation Aggregator Configuration with IRSA](/aws/clusters-using-irsa-eks-pod-identities/aws-kubecost-agent-irsa.yaml)
 
-   ```bash
+```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
      --values aws-kubecost-agent-irsa.yaml
-   ```
+```
 
    ***Option B: Using Access Key and Secret***
    - [ ] [ETL Federation Aggregator Configuration no IRSA](/aws/clusters-using-access-key/aws-kubecost-agent.yaml)
 
-   ```bash
+```bash
    helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
      --values aws-kubecost-agent.yaml
-   ```
+```
 ## Optional Configuration
 4. **Network Costs Daemonset Configured**  
    - [ ] [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-network-cost)
