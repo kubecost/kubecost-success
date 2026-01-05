@@ -1,6 +1,6 @@
 # Kubecost On-Premises Deployment Guide (Self-hosted)
 
-![Kubecost Enterprise Architecture](/assets/onpremdiagram-option1.png)
+![Kubecost Enterprise Architecture](/assets/on-prem-v3.png)
 
 This guide provides step-by-step instructions for deploying Kubecost in an on-premises environment. Choose the deployment option that best fits your infrastructure requirements.
 
