@@ -41,7 +41,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
 ```
 
 2. **Cloud Cost Integration Configured**  
-   - [ ] [AWS Cloud Integration](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-aws-cloud-billing-integration) 
+   - [ ] [AWS Cloud Integration](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=integrations-aws-cloud-billing-integration) 
 
    - [ ] [AWS Cloud Integration using IRSA/EKS Pod Identities](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=integration-aws-cloud-using-irsaeks-pod-identities)
 
@@ -77,7 +77,7 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
 5. **SSO/SAML/OIDC Enabled**
    
  ### Authentication & Authorization
-- [ ] [Configure SSO/SAML](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
+- [ ] [Configure SSO/SAML](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-saml)
 - [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
 - [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
 

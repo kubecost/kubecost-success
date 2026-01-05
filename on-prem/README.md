@@ -57,7 +57,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 
 ### Authentication & Authorization
-- [ ] [Configure SSO/SAML](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
+- [ ] [Configure SSO/SAML](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-saml)
 - [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
 - [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
 
