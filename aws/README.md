@@ -5,6 +5,9 @@
 It is recommended to deploy Kubecost Enterprise in this order to improve time to value. Configuring the AWS cloud integration will provide the most accurate data. Otherwise, it will default to on-demand public pricing and will not accurately reflect your AWS bill.
 
 ## Prerequisites
+
+A total of 3 buckets are required in order to support a IBM Kubecost Federated deployment with AWS cloud integration.
+
 1. - [ ] [Generate AWS CUR](https://docs.aws.amazon.com/cur/latest/userguide/cur-create.html) 
 
 2. - [ ] Set up a dedicated s3 object store for cluster metrics
@@ -18,30 +21,26 @@ It is recommended to deploy Kubecost Enterprise in this order to improve time to
 1. **Kubecost Installed on Primary Cluster**  
    - [Installation Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=installation-kubecost-v2-installupgrade)  
 
-   **Option A: Basic Installation**
+   **Option A: Enterprise with IRSA/EKS Pod Identities**
+   - [ ] [Enteprise Federation with IRSA/EKS Pod Identities](/aws/clusters-using-irsa-eks-pod-identities/aws-primary-federation-irsa.yaml)
 
-   - [ ] [Minimal Install (No Federation)](/aws/aws-primary-minimal.yaml)
-
-   **Option B: Enterprise with IRSA**
-   - [ ] [Enteprise Federation with IRSA/EKS Pod Identities](/aws/aws-primary-federation-irsa.yaml)
-
-   **Option C: Enterprise without IRSA**
-   - [ ] [Enteprise Federation no IRSA](/aws/aws-primary-federation-no-irsa.yaml)
+   **Option B: Using Access Key and Secret**
+   - [ ] [Enteprise Federation no IRSA](/aws/clusters-using-access-key/aws-primary.yaml)
 
 2. **Cloud Cost Integration Configured**  
    - [ ] [AWS Cloud Integration](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integrations-aws-cloud-billing-integration) 
 
-   - [ ] [AWS Cloud Integration using IRSA/EKS Pod Identities](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=integration-aws-cloud-using-irsaeks-pod-identities)
+   - [ ] [AWS Cloud Integration using IRSA/EKS Pod Identities](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=integration-aws-cloud-using-irsaeks-pod-identities)
 
    - [Cloud Integration Config File](/aws/cloud-integration.json)
 
-3. **Kubecost Installed on Secondary Cluster(s)**  
-   
-   **Option A: Without IRSA**
-   - [ ] [ETL Federation Aggregator Configuration no IRSA](/aws/aws-secondary-no-irsa.yaml)
+3. **Kubecost Installed on Secondary Cluster(s)**
 
-   **Option B: With IRSA**
-   - [ ] [ETL Federation Aggregator Configuration with IRSA](/aws/aws-secondary-irsa.yaml)
+   **Option A: With IRSA/EKS Pod Identities**
+   - [ ] [ETL Federation Aggregator Configuration with IRSA](/aws/clusters-using-irsa-eks-pod-identities/aws-secondary-irsa.yaml)
+
+   **Option B: Using Access Key and Secret**
+   - [ ] [ETL Federation Aggregator Configuration no IRSA](/aws/clusters-using-access-key/aws-secondary.yaml)
 
 ## Optional Configuration
 4. **Network Costs Daemonset Configured**  
@@ -49,13 +48,19 @@ It is recommended to deploy Kubecost Enterprise in this order to improve time to
   
    - [Network Cost Config](/aws/network-costs-enabled.yaml)
 
-5. **SSO/SAML Enabled**
+5. **SSO/SAML/OIDC Enabled**
    
-   **Option A: SAML Authentication**
-   - [ ] [Configure SSO/SAML](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-user-management-saml)
+ ### Authentication & Authorization
+- [ ] [Configure SSO/SAML](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
+- [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
+- [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
 
-   **Option B: OIDC Authentication**
-   - [ ] [Configure SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-user-management-ssooidc)
+## Troubleshooting
 
-   **Option C: Team Management**
-   - [Minimal Install (No Federation)](/aws/aws-primary-minimal.yaml)
+Common issues and their solutions will be documented here.
+
+## References
+
+- [Kubecost Documentation](https://www.ibm.com/docs/en/kubecost)
+- [Helm Chart Reference](https://github.com/kubecost/kubecost)
+- [Support Resources](https://support.ibm.com) 

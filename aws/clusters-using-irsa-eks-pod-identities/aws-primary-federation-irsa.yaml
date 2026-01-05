@@ -10,6 +10,7 @@ global:
   ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
   federatedStorage:
     config: ""
+  # existingSecret: federated-store 
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
@@ -27,26 +28,10 @@ global:
 ## Processes cloud billing data and pushes CloudCost ETL data to the Federated Storage Bucket.
 ##
 cloudCost:
-  enabled: false
-# cloudIntegrationSecret: cloud-integration # only runs on primary cluster  
-  image:
-    registry: ""  # Default is "icr.io"
-    repository: kubecost/cost-model
-    tag: ""  # Default is to match the Chart.AppVersion
-  fullImageName: ""  # Overrides the default image construction logic.
-  imagePullPolicy: IfNotPresent
+  enabled: true
 aggregator:
   enabled: true
-  image:
-    registry: ""  # Default is "icr.io"
-    repository: kubecost/cost-model
-    tag: ""  # Default is to match the Chart.AppVersion
-  fullImageName: ""  # Overrides the default image construction logic.
-  imagePullPolicy: IfNotPresent
-  ## Retention values determine for what duration into the past data cloud billing data will be
-  ## queried and processed into ETL.
   retention1d: 91
-
   ## Retention values determine for what duration into the past data will be
   ## ingested into Aggregator's database
   retention1d: 91
@@ -77,8 +62,17 @@ diagnostics:
 ## Values for the finops-agent sub-chart
 ## Ref: https://github.com/kubecost/finops-agent-chart/
 ##
-finops-agent:
+finopsagent:
   enabled: true
+ ## Service Account for IBM FinOps Agent
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+## @param serviceAccount.create Enable creation of ServiceAccount for IBM FinOps Agent pods
+## @param serviceAccount.name Name of the service account to use. If not set and `create` is `true`, a name is generated
+## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
+## @param serviceAccount.annotations Additional custom annotations for the ServiceAccount      
+  serviceAccount:
+    create: false
+    name: "kubecost-finops-agent"
   agent:
     collectorDataSource:
       enabled: true
@@ -89,17 +83,7 @@ finops-agent:
       retention1d: 2
     exporter:
       emissionInterval: 1m
-## Service Account for IBM FinOps Agent
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-## @param serviceAccount.create Enable creation of ServiceAccount for IBM FinOps Agent pods
-## @param serviceAccount.name Name of the service account to use. If not set and `create` is `true`, a name is generated
-## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
-## @param serviceAccount.annotations Additional custom annotations for the ServiceAccount      
-  serviceAccount:
-    create: true
-    name: ""
-    automountServiceAccountToken: true
-    annotations: {}
+
 networkCosts:
   enabled: false
 forecasting:
