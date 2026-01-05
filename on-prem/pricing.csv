@@ -1,0 +1,9 @@
+Version,AssetClass,InstanceType,Region,LabelName,LabelValue,Unit,PricePerUnit
+v1,node,a4,,,,hour,0.24
+v1,node,a4,na-east-2,,,hour,0.26
+v1,node,,,my.org/instance,a6,cpucorehour,0.06
+v1,node,,,my.org/instance,a6,ramgbhour,0.006
+v1,gpu,T4,,,,hour,3.82
+v1,volume,standard,,,,gbhour,0.05
+v1,volume,__local__,,,,gbhour,0.08
+v1,loadbalancer,,,,,hour,0.42

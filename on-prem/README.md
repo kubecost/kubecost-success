@@ -8,35 +8,37 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
 
 1. **Prepare Air-Gapped Environment**
    - [ ] Set up private container registry
-   - [ ] Download and push Kubecost images
+   - [ ] Download and push Kubecost images to internal container registry. Get a list of all images and image paths by running the following command:
+   ```bash
+   helm template kubecost --repo https://kubecost.github.io/kubecost/ kubecost --skip-tests | yq '..|.image? | select(.)' | sort -u
+   ```
    - [ ] Configure Helm repository mirror
 
 2. **Configure Storage**
    - [ ] Set up internal object storage
-   - [ ] Create access credentials (IAM User/IRSA and [Policy](/aws/aws-attach-roles/iam-access-cur-in-payer-account.json))
+   - [ ] Create access credentials (IAM User and [Policy](/aws/aws-attach-roles/iam-access-cur-in-payer-account.json))
+   - [ ] Generate Credentials (access key & secret)
    - [ ] Apply storage configuration
 
-### Option 1: Multi-Cluster Federation with CSV Pricing (Air-Gapped Environment)
-
-![Multi-Cluster Federation](/assets/onpremdiagram-option1.png)
+## Multi-Cluster Federation with Enterprise Custom Pricing (Air-Gapped/Private Cloud/On-prem Environment)
 
 1. **Set Up Shared Storage**
    - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
    ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
    ```
 
 2. **Primary Cluster Installation**
-   - [ ] Install Kubecost using [primary values file](/on-prem/values-defaultmodelpricing-primary.yaml) with federation enabled.
+   - [ ] Install Kubecost using [primary values file](/on-prem/values-ecp-primary.yaml) with federation enabled.
 
    ```bash
    helm upgrade --install kubecost \
-     --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
+     --repo http://internal-helm-repo/charts/ kubecost \
      --namespace kubecost \
-     --values values-csv-custom-pricing-primary.yaml
+     --values values-ecp-primary.yaml
    ```
-   - [ ] Verify ETL pipeline is working
+   - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
 3. **Secondary Clusters Installation**
    - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
@@ -44,56 +46,26 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    ```bash
    kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
    ```
-   - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-csv-custom-pricing-secondary.yaml).
+   - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-ecp-agent.yaml).
 
    ```bash
    helm upgrade --install kubecost \
-     --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
+     --repo http://internal-helm-repo/charts/ kubecost \
      --namespace kubecost \
-     --values values-csv-custom-pricing-secondary.yaml
+     --values values-ecp-agent.yaml
    ```
-   - [ ] Verify data is being sent to primary cluster
+   - [ ] Verify ETL pipeline is working by checking that a /federated directory was created with the cluster-name sub directory in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
-### Option 2: Default Model Pricing
-
-![Default Model Pricing](/assets/onpremdiagram-option3.png)
-   - [ ] Create access credentials 
-   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
-   - [ ] Create secret for object storage in Kubecost namespace.
-   ```bash
-   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
-   ```
-1. **Install Kubecost on primary**
-   - [ ] Install using [primary values file template](/on-prem/values-defaultmodelpricing-primary.yaml) with federation enabled for long term ETL storage. 
-   ```bash
-   helm upgrade --install kubecost \
-     --repo http://internal-helm-repo/charts/ cost-analyzer \
-     --namespace kubecost \
-     --values values-defaultmodelpricing-primary.yaml
-   ```
-
-2. **Secondary Clusters Installation**
-   - [ ] Configure [federated-store.yaml](/on-prem/federated-store.yaml) pointing to the s3 bucket configured in step 2 of prerequisites. 
-   - [ ] Create secret for object storage in Kubecost namespace.
-   ```bash
-   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
-   ```
-   - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/on-prem/values-defaultmodelpricing-primary.yaml).
-   ```bash
-   helm upgrade --install kubecost \
-     --repo http://internal-helm-repo/charts/ cost-analyzer \
-     --namespace kubecost \
-     --values values-defaultmodelpricing-primary.yaml
-   ```
 
 ### Authentication & Authorization
 - [ ] [Configure SSO/SAML](https://docs.kubecost.com/install-and-configure/install/getting-started#sso-saml-rbac-oidc)
-- [ ] [Set up RBAC policies](https://docs.kubecost.com/using-kubecost/navigating-the-kubecost-ui/teams)
+- [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
+- [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
 
-### Alerting & Reporting
-- [ ] Configure Slack/Teams integration
-- [ ] Set up email reports
-- [ ] Define custom alerts
+### Configure the pricing spec
+- [ ] [Configure hourly pricing spec](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-csv-pricing#concept_1__title__1)
+
+[Example csv](/on-prem/pricing.csv)
 
 ## Troubleshooting
 
@@ -101,6 +73,6 @@ Common issues and their solutions will be documented here.
 
 ## References
 
-- [Kubecost Documentation](https://docs.kubecost.com/)
-- [Helm Chart Reference](https://github.com/kubecost/cost-analyzer-helm-chart)
-- [Support Resources](https://support.kubecost.com/) 
+- [Kubecost Documentation](https://www.ibm.com/docs/en/kubecost)
+- [Helm Chart Reference](https://github.com/kubecost/kubecost)
+- [Support Resources](https://support.ibm.com) 
