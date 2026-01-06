@@ -35,7 +35,7 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 3. **Install Kubecost on Primary Cluster with AWS cloud integration and federation** 
 
    **A few important Notes:** 
-   **+A parallel install is recommended when upgrading from 2.x to 3.x for both the primary and agents. Users can perform a parallel install in the same namespace as the current v2 deployment or a new namespace**
+   **+A parallel install is recommended when upgrading from 2.x to 3.x for both the primary and agents. Users should go to v2.9 before going to v3. Follow these [instructions](https://github.com/kubecost/kubecost/blob/v2.9/README.md)**
    
 
    - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with the following custom values configured. 
@@ -53,11 +53,12 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
       @param kubecostProductConfigs.productKey.mountPath=/etc/kubecost/product-key (only runs on primary)
 
 
-       ```bash
-       helm upgrade --install kubecost \
-       --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
-       --namespace kubecost -f values-azure-primary.yaml
-       ```
+```bash
+helm upgrade --install kubecost \
+     --repo https://kubecost.github.io/kubecost/ kubecost \
+     --namespace kubecost \
+     -f values-azure-primary.yaml
+```
 
    - [ ] Check [Installation Guide Reference](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=installation)  
 
@@ -74,13 +75,15 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
          @param global.cluserId=CLUSTER_NAME
          @parama global.federatedStorage.fileName=federated-store.yaml
 
-   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with custom values configured. 
+   - [ ] Run helm install against the helm chart using the override [values-azure-agent.yaml](/azure/values-azure-agent.yaml) file with custom values configured. 
 
-      ```bash
-       helm upgrade --install kubecost \
-       --repo https://kubecost.github.io/cost-analyzer/ cost-analyzer \
-       --namespace kubecost -f values-azure-secondary.yaml
-       ```
+```bash
+helm upgrade --install kubecost \
+     --repo https://kubecost.github.io/kubecost/ kubecost \
+     --namespace kubecost \
+     -f values-azure-agent.yaml
+```
+  - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
 ## Optional Configuration
 

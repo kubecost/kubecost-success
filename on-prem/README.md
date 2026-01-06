@@ -35,7 +35,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    helm upgrade --install kubecost \
      --repo http://internal-helm-repo/charts/ kubecost \
      --namespace kubecost \
-     --values values-ecp-primary.yaml
+     -f values-ecp-primary.yaml
    ```
    - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
@@ -51,7 +51,7 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    helm upgrade --install kubecost \
      --repo http://internal-helm-repo/charts/ kubecost \
      --namespace kubecost \
-     --values values-ecp-agent.yaml
+     -f values-ecp-agent.yaml
    ```
    - [ ] Verify ETL pipeline is working by checking that a /federated directory was created with the cluster-name sub directory in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
