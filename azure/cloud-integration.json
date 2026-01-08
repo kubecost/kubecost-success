@@ -10,3 +10,25 @@
         }
     ]
 }
+/*Use the following config is using a SAS token
+{
+    "azure": {
+      "storage": [
+        {
+          "subscriptionID": "",
+          "account": "",
+          "container": "",
+          "path": "",
+          "cloud": "public",
+          "authorizer": {
+            "authorizerType": "AzureStorageConnectionString",
+            "storageConnectionString": "SAS-TOKEN",
+            "httpConfig": {
+              "insecureSkipVerify": true
+            }
+          }
+        }
+      ]
+    }
+  }
+*/

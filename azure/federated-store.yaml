@@ -7,3 +7,12 @@ config:
   # Example: blob.core.chinacloudapi.cn
   # endpoint: "AZ_object_store_endpoint"
   max_retries: 0
+  #Use the following if using config below if using a SAS token
+  #type: AZURE
+  #config:
+  #  storage_account: "AZ_object_store_storage_account"
+  #  container: "AZ_object_store_container"
+  #  storage_connection_string: "SAS-TOKEN"
+  #  max_retries: 3
+  #  http_config:
+  #    insecure_skip_verify: true  
