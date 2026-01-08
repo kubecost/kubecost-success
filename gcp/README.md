@@ -1,6 +1,6 @@
 # Kubecost GCP Deployment Guide (Self-hosted)
 
-![Kubecost Enterprise Architecture](/assets/gcp-diagram.png)
+![Kubecost Enterprise Architecture](/assets/gcp-cloud-diagram.png)
 
 This guide provides step-by-step instructions for deploying Kubecost in GCP.
 
