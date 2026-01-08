@@ -1,6 +1,6 @@
 # Kubecost Enterprise Deployment Guide
 
-![Kubecost Enterprise Architecture](/assets/kubecost-architecture.png)
+![Kubecost Enterprise Architecture](/assets/KC-Cloud-Architecture.png)
 
 This repository contains deployment guides and configuration templates for setting up Kubecost Enterprise across different environments. Kubecost provides real-time cost visibility and insights for Kubernetes workloads.
 
