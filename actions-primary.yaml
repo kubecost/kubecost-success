@@ -1,3 +1,5 @@
+clusterController:
+  enabled: true
 kubecostProductConfigs:
   actions:
     enabled: true
