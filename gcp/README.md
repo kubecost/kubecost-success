@@ -27,7 +27,7 @@ This guide provides step-by-step instructions for deploying Kubecost in GCP.
 2. **Primary Cluster Installation**
    - [ ] Install Kubecost using [primary values file](/gcp/values-gcp-primary.yaml) with federation enabled.
 
-   ```bash
+```bash
 helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ kubecost   --namespace kedd-primary --create-namespace \
 -f values-gcp-primary.yaml
    ```
