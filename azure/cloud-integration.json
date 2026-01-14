@@ -1,14 +1,18 @@
 {
-    "azure": [
-        {
-            "azureSubscriptionID": "AZ_cloud_integration_subscriptionId",
-            "azureStorageAccount": "AZ_cloud_integration_azureStorageAccount",
-            "azureStorageAccessKey": "AZ_cloud_integration_azureStorageAccessKey",
-            "azureStorageContainer": "AZ_cloud_integration_azureStorageContainer",
-            "azureContainerPath": "",
-            "azureCloud": "public/gov"
+  "azure": {
+    "storage": [
+      {
+        "subscriptionID": "AZ_cloud_integration_subscriptionId",
+        "account": "AZ_cloud_integration_azureStorageAccount",
+        "container": "AZ_cloud_integration_azureStorageContainer",
+        "path": "",
+        "cloud": "public/gov",
+        "authorizer": {
+          "authorizerType": "AzureDefaultCredential",
         }
+      }
     ]
+  }
 }
 /*Use the following config is using a SAS token
 {

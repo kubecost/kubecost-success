@@ -64,7 +64,7 @@ helm upgrade --install kubecost \
 
 5. **Install Kubecost on Secondary Cluster(s)**  
 
-   - [ ] Create a secret from the [federated-store.yaml](/azure/federated-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed.
+   - [ ] Create a secret from the [federated-store.yaml](/azure/federated-store.yaml) which holds the values needed to access the storage account API. This will be needed on ALL clusters where Kubecost is installed. Kubecost supports Storage Access Key, SAS token and SPN auth methods.
 
        ```bash
        kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
