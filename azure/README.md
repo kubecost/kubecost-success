@@ -91,7 +91,7 @@ Please Note: The network cost daemonset will experience CPU throttling and highe
 
 7. **Kubecost Actions**
 
-Continuous Container Requst Right-sizing & Resource Quota Right-sizing
+Continuous Container Request Right-sizing & Resource Quota Right-sizing
 
 ⚠️**Important Note:** In order to use this feature, users must obtain a v3 license key. Reach out to your Account Representative(s)
 
