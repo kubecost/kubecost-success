@@ -99,7 +99,7 @@ Continuous Container Requst Right-sizing & Resource Quota Right-sizing
 helm upgrade --install kubecost \
      --repo https://kubecost.github.io/kubecost/ kubecost \
      --namespace kubecost \
-     -f https://raw.githubusercontent.com/kubecost/kubecost-success/refs/heads/main/actions-primary.yaml)
+     -f https://raw.githubusercontent.com/kubecost/kubecost-success/refs/heads/main/actions-primary.yaml
    ```
 
 8. **SSO/SAML Enabled**
