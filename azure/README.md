@@ -84,12 +84,25 @@ helm upgrade --install kubecost \
 
 6. **Network Costs Daemonset Configured** 
 
-Please Note: The network cost daemonset is not recommended for large environments where there are several hundred thousand or more unique containers running per day. 
+Please Note: The network cost daemonset will experience CPU throttling and higher memory consumption in large environments where there are several hundred thousand or more unique containers running per day. 
 
    - [ ] Review [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-network-cost)
    - [ ] Apply [Network Cost Config](/azure/network-costs-enabled.yaml)
 
-7. **SSO/SAML Enabled**
+7. **Kubecost Actions**
+
+Continuous Container Requst Right-sizing & Resource Quota Right-sizing
+
+⚠️**Important Note:** In order to use this feature, users must obtain a v3 license key. Reach out to your Account Representative(s)
+
+```bash
+helm upgrade --install kubecost \
+     --repo https://kubecost.github.io/kubecost/ kubecost \
+     --namespace kubecost \
+     -f [actions-primary.yaml](https://raw.githubusercontent.com/kubecost/kubecost-success/refs/heads/main/actions-primary.yaml)
+   ```
+
+8. **SSO/SAML Enabled**
    - [ ] Review [SSO Documentation](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-ssooidc)
    - [ ] Configure [OIDC](/custom/oidc-rbac.yaml)
    - [ ] Configure [SAML](/custom/saml-rbac-enabled.yaml)
