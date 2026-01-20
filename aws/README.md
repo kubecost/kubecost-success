@@ -69,17 +69,31 @@ A total of 3 buckets are required in order to support a IBM Kubecost Federated d
      -f aws-kubecost-agent.yaml
 ```
 ## Optional Configuration
-4. **Network Costs Daemonset Configured**  
-   - [ ] [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=configuration-network-cost)
-  
-   - [Network Cost Config](/aws/network-costs-enabled.yaml)
 
-5. **SSO/SAML/OIDC Enabled**
-   
- ### Authentication & Authorization
-- [ ] [Configure SSO/SAML](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-saml)
-- [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
-- [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
+4. **Network Costs Daemonset Configured** 
+
+Please Note: The network cost daemonset will experience CPU throttling and higher memory consumption in large environments where there are several hundred thousand or more unique containers running per day. 
+
+   - [ ] Review [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-network-cost)
+   - [ ] Apply [Network Cost Config](/azure/network-costs-enabled.yaml)
+
+5. **Kubecost Actions**
+
+Continuous Container Requst Right-sizing & Resource Quota Right-sizing
+
+⚠️**Important Note:** In order to use this feature, users must obtain a v3 license key. Reach out to your Account Representative(s)
+
+```bash
+helm upgrade --install kubecost \
+     --repo https://kubecost.github.io/kubecost/ kubecost \
+     --namespace kubecost \
+     -f https://raw.githubusercontent.com/kubecost/kubecost-success/refs/heads/main/actions-primary.yaml
+   ```
+
+6. **SSO/SAML Enabled**
+   - [ ] Review [SSO Documentation](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-ssooidc)
+   - [ ] Configure [OIDC](/custom/oidc-rbac.yaml)
+   - [ ] Configure [SAML](/custom/saml-rbac-enabled.yaml)
 
 ## Troubleshooting
 

@@ -55,16 +55,30 @@ This guide provides step-by-step instructions for deploying Kubecost in an on-pr
    ```
    - [ ] Verify ETL pipeline is working by checking that a /federated directory was created with the cluster-name sub directory in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
-
-### Authentication & Authorization
-- [ ] [Configure SSO/SAML](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-saml)
-- [ ] [Set up SSO/OIDC](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-oidc)
-- [ ] [Configure Teams](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=ui-teams)
-
 ### Configure the pricing spec
 - [ ] [Configure hourly pricing spec](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-csv-pricing#concept_1__title__1)
 
 [Example csv](/on-prem/pricing.csv)
+
+## Optional Configuration
+
+ **Kubecost Actions**
+
+Continuous Container Requst Right-sizing & Resource Quota Right-sizing
+
+⚠️**Important Note:** In order to use this feature, users must obtain a v3 license key. Reach out to your Account Representative(s)
+
+```bash
+helm upgrade --install kubecost \
+     --repo https://kubecost.github.io/kubecost/ kubecost \
+     --namespace kubecost \
+     -f https://raw.githubusercontent.com/kubecost/kubecost-success/refs/heads/main/actions-primary.yaml
+   ```
+
+ **SSO/SAML Enabled**
+   - [ ] Review [SSO Documentation](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-ssooidc)
+   - [ ] Configure [OIDC](/custom/oidc-rbac.yaml)
+   - [ ] Configure [SAML](/custom/saml-rbac-enabled.yaml)
 
 ## Troubleshooting
 
