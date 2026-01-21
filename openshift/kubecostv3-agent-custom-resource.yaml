@@ -1,0 +1,62 @@
+kind: Kubecost
+apiVersion: charts.kubecost.com/v1
+metadata:
+  name: kubecost-sample
+  namespace: kubecost
+spec:
+  global:
+    clusterId: SET_A_UNIQUE_CLUSTER_ID_HERE
+    platforms:
+      cicd:
+        enabled: true
+        skipSanityChecks: true
+      openshift:
+        enabled: true
+        route:
+          annotations: {}
+          enabled: false
+        scc:
+          clusterController: true
+          networkCosts: true
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+  federatedStorage:
+    config: ""
+  #   enabled: false #not needed for eval
+  # If you want to use a different file name for the federated storage config, you can set the fileName value.
+  # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
+    existingSecret: ""
+finopsagent:
+  enabled: true
+  # serviceAccount:
+  #   create: true
+  #   name: finops-agent
+  agent:
+    collectorDataSource:
+      enabled: true
+      scrapeInterval: 30s
+      ## Retention values are for the agent's local store only and do not affect Kubecost history.
+      ## These can be increased, but will require more memory.
+      retention10m: 6
+      retention1h: 3
+      retention1d: 2
+    exporter:
+      ## Emission interval is the interval at which the agent will emit metrics to the object storage.
+      ## This can be increased to reduce the number of object (versions) written to the object storage when versioning is enabled.
+      emissionInterval: 1m
+aggregator:
+  enabled: false
+frontend:
+  enabled: false
+clusterController:
+  enabled: false
+cloudCost:
+  enabled: false
+forecasting:
+  enabled: false
+localStore:
+  enabled: false
+networkCosts:
+  enabled: false
