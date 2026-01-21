@@ -8,5 +8,5 @@ spec:
   name: kubecost-operator
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: kubecost-operator.v3.0.2
+  startingCSV: kubecost-operator.v3.1.1
   installPlanApproval: Automatic
