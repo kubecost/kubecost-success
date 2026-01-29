@@ -10,6 +10,7 @@ global:
   ## Ref: https://www.ibm.com/docs/en/kubecost/self-hosted/2.x?topic=cluster-long-term-federated-storage-configuration
   federatedStorage:
     config: ""
+  # existingSecret: federated-store" 
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
