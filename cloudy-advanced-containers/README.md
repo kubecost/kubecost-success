@@ -13,8 +13,8 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    ```
    - [ ] Configure Helm repository mirror
 
-2. Users need to have Cloudability Container Insights set up prior to using Cloudability Advanced Containers because the following values are n
-   are needed for the install:
+2. Users need to have Cloudability Container Insights set up prior to using Cloudability Advanced Containers because the following values
+   are needed for the agent install:
    - [ ] cloudability.apiKey="<CLOUDABILITY_API_KEY>
    - [ ] cloudability.envId="<CLOUDABILITY_ENV_ID>
    - [ ] federatedStorage.existingSecret=”<secret_with_federated_storage_config>”
