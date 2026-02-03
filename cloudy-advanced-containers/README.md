@@ -17,12 +17,12 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    are needed for the install:
    - [ ] cloudability.apiKey="<CLOUDABILITY_API_KEY>
    - [ ] cloudability.envId="<CLOUDABILITY_ENV_ID>
-   - [ ] federatedStorage.existingSecret=”<secret with federated storage config>”
+   - [ ] federatedStorage.existingSecret=”<secret_with_federated_storage_config>”
 
 ## Install IBM Finops Agent
 
 1. **Finpops Agent Installation**
-   - [ ] Configure [federated-store.yaml](/cloudy-advanced-containers/federated-store.yaml) pointing to the s3 bucket configured curently being used for Cloudability Container insights. 
+   - [ ] Configure [federated-store.yaml](/cloudy-advanced-containers/federated-store.yaml) pointing to the s3 bucket being used for Cloudability Container insights. 
 
    - [ ] Create secret for object storage in Kubecost namespace.
 ```bash
