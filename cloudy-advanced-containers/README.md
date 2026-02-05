@@ -37,7 +37,7 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    - [ ] Install Kubecost on agent clusters using the customized [agent values file template](/cloudy-advanced-containers/ibm-finops-agent.yaml).
 
 ```bash
-helm upgrade --install kubecost-finops-agent ibm-finops/finops-agent-chart \ 
+helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \ \ 
   --namespace kubecost --create-namespace \ 
      -f ibm-finops-agent.yaml
 ```
