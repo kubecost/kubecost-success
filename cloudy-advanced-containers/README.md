@@ -7,7 +7,7 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
 
 1. **Pull images to store in internal registry (if applicable)**
    - [ ] Set up private container registry
-   - [ ] Download and push Kubecost images to internal container registry. The command below lists all images. Only the finops agent and cluster-controller (optional) are needed for the IBM Finops agent. They are located at icr.io/ibm-finops/ and icr.io/kubcost
+   - [ ] Download and push Kubecost images to internal container registry. The command below lists all images. Only the finops agent and cluster-controller (optional) are needed for the IBM Finops agent. They are located at icr.io/ibm-finops/ and icr.io/kubecost
    ```bash
    helm template kubecost --repo https://kubecost.github.io/kubecost/ kubecost --skip-tests | yq '..|.image? | select(.)' | sort -u
    ```
