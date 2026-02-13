@@ -157,5 +157,3 @@ echo "  View ResourceQuota: kubectl describe resourcequota compute-quota -n $NAM
 echo "  Delete deployment: kubectl delete deployment $DEPLOYMENT_NAME -n $NAMESPACE"
 echo "  Delete namespace: kubectl delete namespace $NAMESPACE"
 echo "================================================"
-
-# Made with Bob
