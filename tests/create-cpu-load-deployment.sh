@@ -20,7 +20,7 @@ echo "Deployment Name: $DEPLOYMENT_NAME"
 echo "Replicas: 2"
 echo "CPU Load per Pod: ~200m (0.2 cores)"
 echo "Total CPU Load: ~400m (0.4 cores)"
-echo "Resource Quota: 500m CPU, 600Mi Memory"
+echo "Resource Quota: 800m CPU, 600Mi Memory"
 echo "================================================"
 
 # Create namespace
@@ -51,7 +51,7 @@ spec:
   hard:
     requests.cpu: "500m"
     requests.memory: "600Mi"
-    limits.cpu: "500m"
+    limits.cpu: "800m"
     limits.memory: "600Mi"
 EOF
 
@@ -99,7 +99,7 @@ spec:
         resources:
           limits:
             memory: 256Mi
-            cpu: 200m
+            cpu: 400m
           requests:
             memory: 128Mi   
             cpu: 200m
