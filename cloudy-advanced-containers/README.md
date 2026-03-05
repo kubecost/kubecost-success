@@ -13,16 +13,16 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    ```
    - [ ] Configure Helm repository mirror
 
-2. Users need to have Cloudability Container Insights set up prior to using Cloudability Advanced Containers because the following values
-   are needed for the agent install:
-   - [ ] cloudability.apiKey="<CLOUDABILITY_API_KEY>
-   - [ ] cloudability.envId="<CLOUDABILITY_ENV_ID>
+2. Create a user and attach the CloudabilityContainerUploader role. This needs to be provisioned in front door using the [Kubernetes Cluster Provisioning Documentation](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-essentials/saas?topic=cloudability-kubernetes-cluster-provisioning). After creating the user, generate the API key. This will generate a public and private access key which is part of the checklist below and will be used in the [ibm-finops-agent.yaml](/cloudy-advanced-containers/ibm-finops-agent.yaml) file.
+   - [ ] agent.cloudability.secret.cloudabilityAccessKey=<publicKey>
+   - [ ] agent.cloudability.secret.cloudabilitySecretKey=<privateKey>
+   - [ ] agent.cloudability.secret.EnvId="<CLOUDABILITY_ENV_ID>
    - [ ] federatedStorage.existingSecret=”<secret_with_federated_storage_config>”
 
 ## Install IBM Finops Agent
 
 1. **Finpops Agent Installation**
-   - [ ] Configure [federated-store.yaml](/cloudy-advanced-containers/federated-store.yaml) pointing to the s3 bucket being used for Cloudability Container insights. 
+   - [ ] Configure [federated-store.yaml](/cloudy-advanced-containers/federated-store.yaml) pointing to the s3 bucket being used for Cloudability Container insights. This can be found under the Monitor > Clusters tab in the Cloudability Advanced Containers UI (located under insights in Cloudability) 
 
    - [ ] Create secret for object storage in Kubecost namespace.
 ```bash
