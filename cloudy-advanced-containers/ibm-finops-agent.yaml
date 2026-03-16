@@ -10,6 +10,8 @@ agent:
       cloudabilitySecretKey: $private key
       cloudabilityEnvId: $environmentID
       create: true
+    uploadRegion: us-west-2
+    parseMetricData: false
   collectorDataSource:
     enabled: true
     retention10m: 6
