@@ -32,10 +32,13 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
 
 ## Kubecost Installation
 
-3. **Install Kubecost on Primary Cluster with AWS cloud integration and federation** 
+3. **Install Kubecost on Primary Cluster with Azure cloud integration and federation** 
 
-   **A few important Notes:** 
-   **+A parallel install is recommended when upgrading the primary Kubecost Install from 2.x to 3.x. Users should go to v2.9 before going to v3 when upgrading the agents to avoid a partial days worth of data loss. Follow these [instructions](https://github.com/kubecost/kubecost/blob/v2.9/README.md)**
+   **A few important Notes:**
+   
+   - **A parallel install is recommended when upgrading the primary Kubecost Install from 2.x to 3.x. Users should go to v2.9 before going to v3 when upgrading the agents to avoid a partial days worth of data loss. Follow these [instructions](https://github.com/kubecost/kubecost/blob/v2.9/README.md)**
+   
+   - **Reach out to your account rep to obtain a license key. This will need to be added to the `kubecostProductConfigs.productKey.key` field in the `values-azure-primary.yaml` file.**
    
 
    - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with the following custom values configured. 
