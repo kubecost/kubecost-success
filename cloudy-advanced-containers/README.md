@@ -24,9 +24,9 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
 1. **Finpops Agent Installation**
    - [ ] Configure [federated-store.yaml](/cloudy-advanced-containers/federated-store.yaml) pointing to the s3 bucket being used for Cloudability Container insights. This can be found under the Monitor > Clusters tab in the Cloudability Advanced Containers UI (located under insights in Cloudability) 
 
-   - [ ] Create secret for object storage in Kubecost namespace.
+   - [ ] Create secret for object storage in ibm-finops-agent namespace.
 ```bash
-   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n ibm-finops-agent
 ```
    - [ ] Add the repo
 
@@ -34,11 +34,11 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    helm repo add ibm-finops https://kubecost.github.io/finops-agent-chart 
    helm repo update
 ``` 
-   - [ ] Install Kubecost on agent clusters using the customized [agent values file template](/cloudy-advanced-containers/ibm-finops-agent.yaml).
+   - [ ] Install IBM FinOps CAC on agent clusters using the customized [agent values file template](/cloudy-advanced-containers/ibm-finops-agent.yaml).
 
 ```bash
 helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \ \ 
-  --namespace kubecost --create-namespace \ 
+  --namespace ibm-finops-agent --create-namespace \ 
      -f ibm-finops-agent.yaml
 ```
    - [ ] Verify ETL pipeline is working and that the agent is reporting metrics in the kubecost console. This can take anywhere from 25 mins or more depending on how pods are running on the local agent cluster. Ensure the finops pod is running and check finops-agent pod logs for errors pushing to the bucket often found in the beginning of the log stream.
@@ -49,12 +49,16 @@ helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \ \
 
 Continuous Container Requst Right-sizing & Resource Quota Right-sizing Automation
 
-⚠️**Important Note:** In order to use this feature, users must obtain a v3 license key. Reach out to your Account Representative(s)
+1. **Install the Cluster Controller from the Kubecost repo**
 
- **SSO/SAML Enabled (If applicable for Teams Feature)**
-   - [ ] Review [SSO Documentation](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-user-management-ssooidc)
-   - [ ] Configure [OIDC](/custom/oidc-rbac.yaml)
-   - [ ] Configure [SAML](/custom/saml-rbac-enabled.yaml)
+   - [ ] Install the Cluster Controller from the Kubecost repo using the cluster-controller values file template. Ensure you modify global.clusterID to match the cluster name of the agent cluster.
+
+```bash
+helm upgrade --install ibm-kubecost-cluster-controller --repo https://kubecost.github.io/kubecost/ kubecost \ \ 
+  --namespace ibm-finops-agent --create-namespace \ 
+     -f cluster-controller.yaml
+```
+
 
 ## Troubleshooting
 

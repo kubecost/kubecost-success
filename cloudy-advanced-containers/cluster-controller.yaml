@@ -1,0 +1,22 @@
+# Install Kubecost with ONLY cluster controller
+global:
+  clusterId: "$cluster_name"
+  acknowledged: true
+  federatedStorage:
+    existingSecret: federated-store
+frontend:
+  enabled: false
+localStore:
+  enabled: false
+finopsagent:
+  enabled: false  # Use IBM finops-agent instead
+forecasting:
+  enabled: false
+aggregator:
+  enabled: false
+cloudCost:
+  enabled: false
+networkCosts:
+  enabled: false
+clusterController:
+  enabled: true
