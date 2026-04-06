@@ -37,7 +37,7 @@ This guide provides step-by-step instructions for deploying the IBM Finops agent
    - [ ] Install IBM FinOps CAC on agent clusters using the customized [agent values file template](/cloudy-advanced-containers/ibm-finops-agent.yaml).
 
 ```bash
-helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \ \ 
+helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \  
   --namespace ibm-finops-agent --create-namespace \ 
      -f ibm-finops-agent.yaml
 ```
@@ -54,8 +54,9 @@ Continuous Container Requst Right-sizing & Resource Quota Right-sizing Automatio
    - [ ] Install the Cluster Controller from the Kubecost repo using the cluster-controller values file template. Ensure you modify global.clusterID to match the cluster name of the agent cluster.
 
 ```bash
-helm upgrade --install ibm-kubecost-cluster-controller --repo https://kubecost.github.io/kubecost/ kubecost \ \ 
-  --namespace ibm-finops-agent --create-namespace \ 
+helm upgrade --install ibm-kubecost-cluster-controller \
+--repo https://kubecost.github.io/kubecost/ kubecost \  
+--namespace ibm-finops-agent --create-namespace \ 
      -f cluster-controller.yaml
 ```
 
