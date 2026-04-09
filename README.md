@@ -143,12 +143,23 @@ If you prefer manual setup or already have the tools installed:
 
 Configure these secrets in your GitHub repository (Settings → Secrets and variables → Actions):
 
+#### For Single Cluster Mode:
 | Secret Name | Description | Example |
 |------------|-------------|---------|
 | `KUBE_CONFIG` | Base64-encoded kubeconfig file | `cat ~/.kube/config \| base64` |
 | `FEDERATED_STORAGE_CONFIG` | Federated storage YAML config from IBM | Provided by IBM for SaaS |
 | `KUBECOST_TOKEN` | (Legacy - optional for 3.x) SaaS agent token | Provided by IBM |
 | `KUBECOST_PRIMARY_URL` | (Legacy - optional for 3.x) Primary instance URL | `https://kubecost.ibm.example.com` |
+
+#### For Matrix Mode (Multi-Cluster):
+Configure separate kubeconfig secrets for each cluster:
+| Secret Name | Description |
+|------------|-------------|
+| `KUBE_CONFIG_PROD_US_EAST` | Production US East cluster kubeconfig |
+| `KUBE_CONFIG_PROD_EU_WEST` | Production EU West cluster kubeconfig |
+| `KUBE_CONFIG_STAGING_US` | Staging US cluster kubeconfig |
+| `FEDERATED_STORAGE_CONFIG` | Shared federated storage config (same for all clusters) |
+| `KUBECOST_TOKEN` | Shared Kubecost token (same for all clusters) |
 
 **Note for 3.x**: The primary configuration method is now `FEDERATED_STORAGE_CONFIG`. Legacy token/URL settings are optional for backward compatibility.
 
@@ -159,11 +170,13 @@ The repository includes a single, unified GitHub Actions workflow ([`.github/wor
 #### Workflow Features
 
 - **Single workflow** for both deploy and update operations
-- **Conditional logic** that adapts based on the selected action
+- **Deployment modes**: Single cluster or matrix (multi-cluster) deployment
+- **Conditional logic** that adapts based on the selected action and mode
 - **Automatic rollback** on failed updates
 - **Dry run support** for testing changes
 - **Version management** with latest or pinned versions
 - **Health checks** and verification steps
+- **Parallel deployment** for matrix mode with fail-fast option
 
 #### Triggering the Workflow
 
@@ -172,7 +185,8 @@ The repository includes a single, unified GitHub Actions workflow ([`.github/wor
 2. Click "Run workflow"
 3. Select options:
    - **Action**: `deploy` (initial) or `update` (existing)
-   - **Cluster name**: Required for deploy, optional for update
+   - **Deployment mode**: `single` (one cluster) or `matrix` (multiple clusters)
+   - **Cluster name**: Required for single mode deploy, optional for update
    - **Chart version**: Leave empty for latest or specify version
    - **Namespace**: Default is `kubecost`
    - **Dry run**: Test without applying changes
@@ -180,24 +194,38 @@ The repository includes a single, unified GitHub Actions workflow ([`.github/wor
 **Via GitHub CLI:**
 
 ```bash
-# Initial deployment
+# Single cluster deployment
 gh workflow run kubecost-agent.yml \
   -f action=deploy \
+  -f deployment_mode=single \
   -f cluster_name=production-us-east-1 \
   -f namespace=kubecost
 
-# Update to latest version
+# Matrix deployment (multiple clusters)
 gh workflow run kubecost-agent.yml \
-  -f action=update
+  -f action=deploy \
+  -f deployment_mode=matrix
 
-# Update to specific version
+# Update single cluster to latest version
 gh workflow run kubecost-agent.yml \
   -f action=update \
-  -f chart_version=2.0.0
+  -f deployment_mode=single
 
-# Dry run
+# Update all matrix clusters to latest version
 gh workflow run kubecost-agent.yml \
   -f action=update \
+  -f deployment_mode=matrix
+
+# Update to specific version (single cluster)
+gh workflow run kubecost-agent.yml \
+  -f action=update \
+  -f deployment_mode=single \
+  -f chart_version=3.1.6
+
+# Dry run for matrix deployment
+gh workflow run kubecost-agent.yml \
+  -f action=deploy \
+  -f deployment_mode=matrix \
   -f dry_run=true
 ```
 
@@ -208,7 +236,7 @@ curl -X POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   https://api.github.com/repos/OWNER/REPO/actions/workflows/kubecost-agent.yml/dispatches \
-  -d '{"ref":"main","inputs":{"action":"deploy","cluster_name":"production"}}'
+  -d '{"ref":"main","inputs":{"action":"deploy","deployment_mode":"single","cluster_name":"production"}}'
 ```
 
 ### Workflow Behavior
@@ -460,19 +488,45 @@ helm upgrade kubecost-agent kubecost/kubecost \
 
 ## Multi-Cluster Deployment
 
-### GitHub Actions Approach
+### GitHub Actions Matrix Mode
 
-Create separate workflow runs for each cluster or use matrix strategy:
+The workflow now supports native matrix deployment for deploying to multiple clusters simultaneously:
+
+#### Using Matrix Mode
+
+```bash
+# Deploy to all configured clusters
+gh workflow run kubecost-agent.yml \
+  -f action=deploy \
+  -f deployment_mode=matrix
+
+# Update all clusters
+gh workflow run kubecost-agent.yml \
+  -f action=update \
+  -f deployment_mode=matrix
+```
+
+#### Configuring Matrix Clusters
+
+To customize which clusters are included in matrix deployments, edit `.github/workflows/kubecost-agent.yml` and modify the matrix definition in the validation step (around line 70):
 
 ```yaml
-strategy:
-  matrix:
-    cluster:
-      - name: production-us-east-1
-        kubeconfig: KUBE_CONFIG_PROD_US
-      - name: production-eu-west-1
-        kubeconfig: KUBE_CONFIG_PROD_EU
+MATRIX_JSON='[
+  {"name": "production-us-east-1", "kubeconfig_secret": "KUBE_CONFIG_PROD_US_EAST"},
+  {"name": "production-eu-west-1", "kubeconfig_secret": "KUBE_CONFIG_PROD_EU_WEST"},
+  {"name": "staging-us-east-1", "kubeconfig_secret": "KUBE_CONFIG_STAGING_US"}
+]'
 ```
+
+Then configure the corresponding GitHub Secrets for each cluster's kubeconfig.
+
+#### Matrix Mode Benefits
+
+- **Parallel Deployment**: All clusters deploy simultaneously
+- **Consistent Configuration**: Same Helm values applied to all clusters
+- **Fail-Fast Option**: Continue deploying to other clusters even if one fails
+- **Individual Summaries**: Separate deployment summary for each cluster
+- **Centralized Management**: Single workflow run manages all clusters
 
 ### Terraform Approach
 
