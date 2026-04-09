@@ -135,11 +135,13 @@ resource "helm_release" "kubecost_agent" {
       networkPolicy = {
         enabled = var.network_policy_enabled
       }
-
-      # Network policy
-      networkPolicy = {
-        enabled = var.network_policy_enabled
-      }
+      
+      # Pod annotations
+      podAnnotations = var.pod_annotations
+      
+      # Security contexts
+      podSecurityContext = var.pod_security_context
+      securityContext    = var.security_context
     })
   ]
 
