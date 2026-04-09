@@ -1,0 +1,431 @@
+name: Kubecost 3.x Agent Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+          - deploy
+          - update
+        default: 'deploy'
+      deployment_mode:
+        description: 'Deployment mode'
+        required: true
+        type: choice
+        options:
+          - single
+          - matrix
+        default: 'single'
+      cluster_name:
+        description: 'Cluster name (required for single mode deploy)'
+        required: false
+        type: string
+      chart_version:
+        description: 'Kubecost chart version (leave empty for latest)'
+        required: false
+        type: string
+      namespace:
+        description: 'Kubernetes namespace'
+        required: false
+        type: string
+        default: 'kubecost'
+      dry_run:
+        description: 'Perform dry run only'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  HELM_VERSION: '3.13.0'
+  KUBECTL_VERSION: '1.28.0'
+
+jobs:
+  validate:
+    name: Validate Inputs
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.validate.outputs.action }}
+      deployment_mode: ${{ steps.validate.outputs.deployment_mode }}
+      cluster_name: ${{ steps.validate.outputs.cluster_name }}
+      chart_version: ${{ steps.validate.outputs.chart_version }}
+      namespace: ${{ steps.validate.outputs.namespace }}
+      matrix_json: ${{ steps.validate.outputs.matrix_json }}
+    steps:
+      - name: Validate inputs
+        id: validate
+        run: |
+          ACTION="${{ github.event.inputs.action }}"
+          DEPLOYMENT_MODE="${{ github.event.inputs.deployment_mode }}"
+          CLUSTER_NAME="${{ github.event.inputs.cluster_name }}"
+          NAMESPACE="${{ github.event.inputs.namespace || 'kubecost' }}"
+          CHART_VERSION="${{ github.event.inputs.chart_version }}"
+          
+          echo "action=${ACTION}" >> $GITHUB_OUTPUT
+          echo "deployment_mode=${DEPLOYMENT_MODE}" >> $GITHUB_OUTPUT
+          echo "namespace=${NAMESPACE}" >> $GITHUB_OUTPUT
+          
+          # For single mode deploy action, cluster_name is required
+          if [ "${DEPLOYMENT_MODE}" = "single" ] && [ "${ACTION}" = "deploy" ] && [ -z "${CLUSTER_NAME}" ]; then
+            echo "::error::Cluster name is required for single mode deploy action"
+            exit 1
+          fi
+          
+          # Use provided cluster name or get from existing deployment
+          if [ -n "${CLUSTER_NAME}" ]; then
+            echo "cluster_name=${CLUSTER_NAME}" >> $GITHUB_OUTPUT
+          else
+            echo "cluster_name=existing" >> $GITHUB_OUTPUT
+          fi
+          
+          # Set chart version or use latest
+          if [ -n "${CHART_VERSION}" ]; then
+            echo "chart_version=${CHART_VERSION}" >> $GITHUB_OUTPUT
+          else
+            echo "chart_version=latest" >> $GITHUB_OUTPUT
+          fi
+          
+          # For matrix mode, define the cluster matrix
+          if [ "${DEPLOYMENT_MODE}" = "matrix" ]; then
+            # Define your clusters here - customize based on your environment
+            MATRIX_JSON='[
+              {"name": "production-us-east-1", "kubeconfig_secret": "KUBE_CONFIG_PROD_US_EAST"},
+              {"name": "production-eu-west-1", "kubeconfig_secret": "KUBE_CONFIG_PROD_EU_WEST"},
+              {"name": "staging-us-east-1", "kubeconfig_secret": "KUBE_CONFIG_STAGING_US"}
+            ]'
+            echo "matrix_json=${MATRIX_JSON}" >> $GITHUB_OUTPUT
+            echo "📊 Matrix mode enabled with $(echo ${MATRIX_JSON} | jq '. | length') clusters"
+          fi
+          
+          echo "✅ Validation passed"
+          echo "Action: ${ACTION}"
+          echo "Mode: ${DEPLOYMENT_MODE}"
+          echo "Cluster: ${CLUSTER_NAME:-existing}"
+          echo "Namespace: ${NAMESPACE}"
+          echo "Chart Version: ${CHART_VERSION:-latest}"
+
+  deploy-or-update:
+    name: ${{ github.event.inputs.action == 'deploy' && 'Deploy' || 'Update' }} Kubecost Agent (${{ matrix.cluster.name || needs.validate.outputs.cluster_name }})
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.deployment_mode == 'single' || needs.validate.outputs.deployment_mode == 'matrix'
+    strategy:
+      fail-fast: false
+      matrix:
+        cluster: ${{ needs.validate.outputs.deployment_mode == 'matrix' && fromJson(needs.validate.outputs.matrix_json) || fromJson('[{"name":"single","kubeconfig_secret":"KUBE_CONFIG"}]') }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBECTL_VERSION }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          
+          # Use matrix kubeconfig secret if in matrix mode, otherwise use default
+          if [ "${{ needs.validate.outputs.deployment_mode }}" = "matrix" ]; then
+            KUBECONFIG_SECRET="${{ matrix.cluster.kubeconfig_secret }}"
+            echo "🔧 Configuring kubectl for cluster: ${{ matrix.cluster.name }}"
+            echo "${{ secrets[matrix.cluster.kubeconfig_secret] }}" | base64 -d > $HOME/.kube/config
+          else
+            echo "🔧 Configuring kubectl for single cluster"
+            echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          fi
+          
+          chmod 600 $HOME/.kube/config
+          
+          # Verify connection
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Add Kubecost 3.x Helm repository
+        run: |
+          helm repo add kubecost https://kubecost.github.io/kubecost/
+          helm repo update
+
+      - name: Get latest chart version
+        id: chart_version
+        run: |
+          if [ "${{ needs.validate.outputs.chart_version }}" = "latest" ]; then
+            LATEST_VERSION=$(helm search repo kubecost/kubecost --output json | jq -r '.[0].version')
+            echo "version=${LATEST_VERSION}" >> $GITHUB_OUTPUT
+            echo "📦 Using latest Kubecost 3.x chart version: ${LATEST_VERSION}"
+          else
+            echo "version=${{ needs.validate.outputs.chart_version }}" >> $GITHUB_OUTPUT
+            echo "📦 Using specified chart version: ${{ needs.validate.outputs.chart_version }}"
+          fi
+
+      - name: Check if release exists
+        id: check_release
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          if helm list -n ${NAMESPACE} | grep -q "kubecost-agent"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            CURRENT_VERSION=$(helm list -n ${NAMESPACE} -o json | jq -r '.[] | select(.name=="kubecost-agent") | .chart' | cut -d'-' -f3)
+            echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "📊 Current version: ${CURRENT_VERSION}"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "📊 No existing release found"
+          fi
+
+      - name: Create namespace
+        if: github.event.inputs.action == 'deploy'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+          echo "✅ Namespace ${NAMESPACE} ready"
+
+      - name: Create Kubecost secret
+        if: github.event.inputs.action == 'deploy'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          kubectl create secret generic kubecost-token \
+            --from-literal=token="${{ secrets.KUBECOST_TOKEN }}" \
+            --namespace ${NAMESPACE} \
+            --dry-run=client -o yaml | kubectl apply -f -
+          echo "✅ Secret created"
+
+      - name: Prepare Helm values
+        id: helm_values
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          
+          # Determine cluster name based on deployment mode
+          if [ "${{ needs.validate.outputs.deployment_mode }}" = "matrix" ]; then
+            CLUSTER_NAME="${{ matrix.cluster.name }}"
+            echo "📦 Using matrix cluster name: ${CLUSTER_NAME}"
+          else
+            CLUSTER_NAME="${{ needs.validate.outputs.cluster_name }}"
+            
+            # Get cluster name from existing deployment if updating
+            if [ "${{ github.event.inputs.action }}" = "update" ] && [ "${CLUSTER_NAME}" = "existing" ]; then
+              CLUSTER_NAME=$(kubectl get configmap -n ${NAMESPACE} kubecost-agent-config -o jsonpath='{.data.cluster-name}' 2>/dev/null || echo "")
+              if [ -z "${CLUSTER_NAME}" ]; then
+                echo "::error::Could not determine cluster name from existing deployment"
+                exit 1
+              fi
+            fi
+          fi
+          
+          cat > /tmp/values.yaml <<EOF
+          # Kubecost 3.x SaaS Agent Configuration
+          global:
+            # Cluster identification (required in 3.x)
+            clusterId: "${CLUSTER_NAME}"
+            
+            # Federated storage configuration (provided by IBM for SaaS)
+            federatedStorage:
+              config: |
+                ${{ secrets.FEDERATED_STORAGE_CONFIG }}
+            
+            # Acknowledgment for 3.x (required for enterprise)
+            acknowledged: true
+          
+          # FinOps Agent configuration (replaces old agent settings)
+          finopsagent:
+            enabled: true
+            
+            image:
+              repository: ibm-finops/agent
+              registry: icr.io
+            
+            resources:
+              requests:
+                cpu: "200m"
+                memory: "512Mi"
+              limits:
+                cpu: "1000m"
+                memory: "2Gi"
+          
+          # Disable components not needed for agent-only deployment
+          aggregator:
+            enabled: false
+          
+          frontend:
+            enabled: false
+          
+          cloudCost:
+            enabled: false
+          
+          clusterController:
+            enabled: false
+          
+          forecasting:
+            enabled: false
+          
+          # Network policy
+          networkPolicy:
+            enabled: false
+          EOF
+          
+          echo "📝 Helm values prepared for cluster: ${CLUSTER_NAME}"
+          cat /tmp/values.yaml
+
+      - name: Deploy Kubecost Agent (Initial)
+        if: github.event.inputs.action == 'deploy'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          CHART_VERSION="${{ steps.chart_version.outputs.version }}"
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+          
+          HELM_CMD="helm install kubecost-agent kubecost/kubecost \
+            --namespace ${NAMESPACE} \
+            --version ${CHART_VERSION} \
+            --values /tmp/values.yaml \
+            --wait \
+            --timeout 10m"
+          
+          if [ "${DRY_RUN}" = "true" ]; then
+            HELM_CMD="${HELM_CMD} --dry-run"
+            echo "🔍 Performing dry run..."
+          fi
+          
+          eval ${HELM_CMD}
+          
+          if [ "${DRY_RUN}" != "true" ]; then
+            echo "✅ Kubecost agent deployed successfully"
+          else
+            echo "✅ Dry run completed successfully"
+          fi
+
+      - name: Update Kubecost Agent
+        if: github.event.inputs.action == 'update'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          CHART_VERSION="${{ steps.chart_version.outputs.version }}"
+          CURRENT_VERSION="${{ steps.check_release.outputs.current_version }}"
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+          
+          echo "📊 Current version: ${CURRENT_VERSION}"
+          echo "📦 Target version: ${CHART_VERSION}"
+          
+          if [ "${CURRENT_VERSION}" = "${CHART_VERSION}" ] && [ "${DRY_RUN}" != "true" ]; then
+            echo "ℹ️ Already running version ${CHART_VERSION}, no update needed"
+            exit 0
+          fi
+          
+          HELM_CMD="helm upgrade kubecost-agent kubecost/kubecost \
+            --namespace ${NAMESPACE} \
+            --version ${CHART_VERSION} \
+            --values /tmp/values.yaml \
+            --wait \
+            --timeout 10m \
+            --atomic"
+          
+          if [ "${DRY_RUN}" = "true" ]; then
+            HELM_CMD="${HELM_CMD} --dry-run"
+            echo "🔍 Performing dry run..."
+          fi
+          
+          eval ${HELM_CMD}
+          
+          if [ "${DRY_RUN}" != "true" ]; then
+            echo "✅ Kubecost agent updated successfully from ${CURRENT_VERSION} to ${CHART_VERSION}"
+          else
+            echo "✅ Dry run completed successfully"
+          fi
+
+      - name: Verify deployment
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          
+          echo "🔍 Verifying deployment..."
+          
+          # Wait for pods to be ready
+          kubectl wait --for=condition=ready pod \
+            -l app.kubernetes.io/name=cost-analyzer \
+            -n ${NAMESPACE} \
+            --timeout=300s
+          
+          # Get pod status
+          echo "📊 Pod status:"
+          kubectl get pods -n ${NAMESPACE} -l app.kubernetes.io/name=cost-analyzer
+          
+          # Check logs for connection
+          echo "📋 Recent logs:"
+          kubectl logs -n ${NAMESPACE} -l app.kubernetes.io/name=cost-analyzer --tail=50 | grep -i "connected\|error\|warning" || true
+          
+          echo "✅ Verification complete"
+
+      - name: Deployment summary
+        if: always() && github.event.inputs.dry_run != 'true'
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          ACTION="${{ github.event.inputs.action }}"
+          MODE="${{ needs.validate.outputs.deployment_mode }}"
+          
+          if [ "${MODE}" = "matrix" ]; then
+            CLUSTER_NAME="${{ matrix.cluster.name }}"
+          else
+            CLUSTER_NAME="${{ needs.validate.outputs.cluster_name }}"
+          fi
+          
+          echo "## 📊 Deployment Summary - ${CLUSTER_NAME}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Action**: ${ACTION}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Mode**: ${MODE}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Cluster**: ${CLUSTER_NAME}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Namespace**: ${NAMESPACE}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chart Version**: ${{ steps.chart_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.check_release.outputs.exists }}" = "true" ]; then
+            echo "- **Previous Version**: ${{ steps.check_release.outputs.current_version }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Resources" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          kubectl get all -n ${NAMESPACE} -l app.kubernetes.io/name=cost-analyzer >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  rollback:
+    name: Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [validate, deploy-or-update]
+    if: failure() && github.event.inputs.action == 'update' && github.event.inputs.dry_run != 'true'
+    steps:
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          
+          # Use matrix kubeconfig secret if in matrix mode, otherwise use default
+          if [ "${{ needs.validate.outputs.deployment_mode }}" = "matrix" ]; then
+            echo "${{ secrets[matrix.cluster.kubeconfig_secret] }}" | base64 -d > $HOME/.kube/config
+          else
+            echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          fi
+          
+          chmod 600 $HOME/.kube/config
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Rollback release
+        run: |
+          NAMESPACE="${{ needs.validate.outputs.namespace }}"
+          
+          echo "⚠️ Update failed, initiating rollback..."
+          
+          helm rollback kubecost-agent -n ${NAMESPACE} --wait
+          
+          echo "✅ Rollback completed"
+          
+          # Verify rollback
+          kubectl get pods -n ${NAMESPACE} -l app.kubernetes.io/name=cost-analyzer
+
+# Made with Bob

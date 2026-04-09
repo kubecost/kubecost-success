@@ -1,0 +1,54 @@
+# Kubecost 3.x SaaS Agent Configuration
+global:
+  # Cluster identification (required in 3.x)
+  clusterId: "local-test-cluster"
+  
+  # Federated storage configuration (provided by IBM for SaaS)
+  federatedStorage:
+    config: |
+      type: S3
+      config:
+        bucket: ibm-kubecost-saas-data
+        endpoint: s3.amazonaws.com
+        region: us-east-1
+        access_key: YOUR_ACCESS_KEY
+        secret_key: YOUR_SECRET_KEY
+  
+  # Acknowledgment for 3.x (required for enterprise)
+  acknowledged: true
+
+# FinOps Agent configuration (replaces old agent settings)
+finopsagent:
+  enabled: true
+  
+  image:
+    repository: ibm-finops/agent
+    registry: icr.io
+  
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+# Disable components not needed for agent-only deployment
+aggregator:
+  enabled: false
+
+frontend:
+  enabled: false
+
+cloudCost:
+  enabled: false
+
+clusterController:
+  enabled: false
+
+forecasting:
+  enabled: false
+
+# Network policy
+networkPolicy:
+  enabled: false

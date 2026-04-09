@@ -1,0 +1,31 @@
+# Kubecost 3.x Agent Configuration
+cluster_name  = "local-test-cluster"
+namespace     = "kubecost"
+chart_version = "3.1.6"  # Pin to specific 3.x version
+
+# Federated storage configuration (provided by IBM for SaaS)
+federated_storage_config = <<-EOT
+  type: S3
+  config:
+    bucket: ibm-kubecost-saas-data
+    endpoint: s3.amazonaws.com
+    region: us-east-1
+    access_key: YOUR_ACCESS_KEY
+    secret_key: YOUR_SECRET_KEY
+EOT
+
+# Optional: Customize resources
+agent_resources = {
+  requests = {
+    cpu    = "200m"
+    memory = "512Mi"
+  }
+  limits = {
+    cpu    = "1000m"
+    memory = "2Gi"
+  }
+}
+
+# Legacy settings (optional for 3.x, kept for backward compatibility)
+# kubecost_token       = "your-saas-token-here"
+# kubecost_primary_url = "https://kubecost.ibm.example.com"
