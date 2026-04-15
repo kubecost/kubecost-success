@@ -8,31 +8,52 @@
         "path": "",
         "cloud": "public/gov",
         "authorizer": {
-          "authorizerType": "AzureDefaultCredential",
+          "authorizerType": "AzureDefaultCredential"
         }
       }
     ]
   }
 }
-/*Use the following config is using a SAS token
+
+# Use the following config is using a SAS token
 {
-    "azure": {
-      "storage": [
-        {
-          "subscriptionID": "",
-          "account": "",
-          "container": "",
-          "path": "",
-          "cloud": "public",
-          "authorizer": {
-            "authorizerType": "AzureStorageConnectionString",
-            "storageConnectionString": "SAS-TOKEN",
-            "httpConfig": {
-              "insecureSkipVerify": true
-            }
+  "azure": {
+    "storage": [
+      {
+        "subscriptionID": "",
+        "account": "",
+        "container": "",
+        "path": "",
+        "cloud": "public",
+        "authorizer": {
+          "authorizerType": "AzureStorageConnectionString",
+          "storageConnectionString": "SAS-TOKEN",
+          "httpConfig": {
+            "insecureSkipVerify": true
           }
         }
-      ]
-    }
+      }
+    ]
   }
-*/
+}
+
+# Use the following for a Service Principal with Client Secret
+{
+  "azure": {
+    "storage": [
+      {
+        "subscriptionID": "",
+        "account": "",
+        "container": "",
+        "path": "",
+        "cloud": "public",
+        "authorizer": {
+          "authorizerType": "AzureClientSecretCredential",
+          "tenantID": "",
+          "clientID": "",
+          "clientSecret": ""
+        }
+      }
+    ]
+  }
+}
