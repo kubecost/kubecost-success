@@ -28,3 +28,10 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+  kubecostProductConfigs:
+    productKey:
+      enabled: false
+      key: ""
+      secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
+      mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
+
