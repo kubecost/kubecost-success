@@ -2,6 +2,16 @@ global:
   clusterId: $clustername
   federatedStorage:
     existingSecret: federated-store
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+    ephemeral-storage: 50Mi
+  limits:
+#It is common to increase the memory limit to guarantee avail and data integrity. Want to avoid OOMs.
+    cpu: 2
+    memory: 2048Mi
+    ephemeral-storage: 2Gi
 agent:
   cloudability:
     enabled: true
