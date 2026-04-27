@@ -9,6 +9,7 @@ resources:
     ephemeral-storage: 50Mi
   limits:
 #It is common to increase the memory limit to guarantee avail and data integrity. Want to avoid OOMs.
+#See sizing guide at: https://github.com/kubecost/kubecost/releases/tag/v3.1.4
     cpu: 2
     memory: 2048Mi
     ephemeral-storage: 2Gi
