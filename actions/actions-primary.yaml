@@ -1,0 +1,17 @@
+clusterController:
+  enabled: true
+kubecostProductConfigs:
+  actions:
+    enabled: true
+    config:
+    #enable: true if want to enable cluster-wide.
+    #  clusters:
+        #clustername:
+        #  containerRequestRightSizing:
+        #    enabled: false
+      global:
+        containerRequestRightSizing:
+          enabled: true  
+        resourceQuotaRightSizing:
+          enabled: true
+    
