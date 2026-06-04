@@ -14,36 +14,42 @@ This guide covers four main deployment scenarios:
 - Multi-cluster federation support
 - [View Azure Deployment Guide](/azure/README.md)
 
-### 2. On-Premises Deployment
-- Self-hosted environment setup
-- Air-gapped installation options
-- Custom pricing model configuration
-- [View On-Prem Deployment Guide](/on-prem/README.md)
-
-### 3. AWS Cloud Deployment
+### 2. AWS Cloud Deployment
 - AWS cost and usage integration
 - S3 bucket configuration
 - Multi-cluster federation
 - [View AWS Deployment Guide](/aws/README.md)
 
-### 4. Google Cloud Deployment
+### 3. Google Cloud Deployment
 - GCP billing data integration
 - Cloud Storage bucket configuration
 - GKE cluster integration
 - Multi-cluster federation support
 - [View GCP Deployment Guide](/gcp/README.md)
 
+### 4. Openshift Deployment
+- Self-hosted environment setup
+- Air-gapped/on-prem installation options
+- Custom pricing model configuration
+- [View On-Prem Deployment Guide](/openshift/README.md)
+
+### 5. On-Premises Deployment
+- Self-hosted environment setup
+- Air-gapped installation options
+- Custom pricing model configuration
+- [View On-Prem Deployment Guide](/on-prem/README.md)
+
 ## Key Features
 
 - **Multi-Cluster Support**: Centralized cost management across multiple Kubernetes clusters
 - **Cloud Integration**: Native integration with major cloud providers' billing APIs and billing reports
-- **Custom Pricing**: Support for custom pricing models in air-gapped environments
-- **Long-term Storage**: Configurable ETL data retention using cloud or local storage
+- **Custom Pricing**: Support for custom pricing models in air-gapped & on-prem environments
+- **Long-term Storage**: Configurable ETL data retention using s3 compatible object storage or local storage
 - **Authentication**: SSO/SAML integration options for enterprise environments
 
 ## Prerequisites
 
-- Kubernetes clusters (version 1.21+). Kubernetes 1.31 is officially supported as of v2.
+- Kubernetes clusters (version 1.21+). Kubernetes 1.35 is officially supported as of v2.
 - Helm 3.13+
 - Access to cloud provider resources (for cloud deployments)
 - Storage backend and durable storage for metrics retention
