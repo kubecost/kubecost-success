@@ -28,6 +28,16 @@ spec:
           runAsNonRoot: true
           seccompProfile:
             type: RuntimeDefault
+  clusterController:
+    enabled: false
+  cloudCost:
+    enabled: false
+  forecasting:
+    enabled: false
+  localStore:
+    enabled: false
+  networkCosts:
+    enabled: false
   kubecostProductConfigs:
     productKey:
       enabled: false
