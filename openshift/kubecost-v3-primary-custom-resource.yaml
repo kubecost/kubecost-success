@@ -7,11 +7,10 @@ spec:
   global:
     clusterId: SET_A_UNIQUE_CLUSTER_ID_HERE
     federatedStorage:
-    config: ""
-  # existingSecret: federated-store" 
-  #   enabled: false #not needed for eval
+      config: ""
+    # existingSecret: federated-store" 
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
-  # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
+    # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
     platforms:
       cicd:
         enabled: true
@@ -38,10 +37,10 @@ spec:
     enabled: false
   networkCosts:
     enabled: false
-  kubecostProductConfigs:
-    productKey:
-      enabled: false
-      key: ""
-      secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
-      mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
+#  kubecostProductConfigs:
+#    productKey:
+#      enabled: false
+#      key: ""
+#      secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
+#      mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
 
