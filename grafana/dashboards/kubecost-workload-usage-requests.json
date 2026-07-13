@@ -1,0 +1,1299 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "ad8tlfc",
+    "namespace": "default",
+    "uid": "3671a753-e156-4c96-adc2-d161c373a8b4",
+    "resourceVersion": "1783518746067009",
+    "generation": 88,
+    "creationTimestamp": "2026-05-19T09:50:23Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "3032387419992064"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:dfl4wbgz6oqv4a",
+      "grafana.app/folder": "",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
+      "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
+      "grafana.app/updatedTimestamp": "2026-07-08T13:52:26Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-11": {
+        "kind": "Panel",
+        "spec": {
+          "id": 11,
+          "title": "All Controllers - Idle Cost & Efficiency",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data[].*.{\n  \"Name\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Compute Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/allocation",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "controller"
+                            },
+                            {
+                              "key": "idle",
+                              "value": "false"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "filterNamespaces",
+                              "value": "${Namespace}"
+                            },
+                            {
+                              "key": "filterClusters",
+                              "value": "${Cluster}"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Name",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {},
+                      "includeByName": {},
+                      "indexByName": {
+                        "CPU Request Average A": 3,
+                        "CPU Usage Average A": 4,
+                        "Compute Idle Cost A": 1,
+                        "Efficiency A": 2,
+                        "Max CPU B": 5,
+                        "Name": 0,
+                        "RAM Request Average (GB) A": 6,
+                        "RAM Usage Average (GB) A": 7
+                      },
+                      "renameByName": {
+                        "CPU Request (Max) B": "CPU Request (Max)",
+                        "CPU Request Average A": "CPU Request",
+                        "CPU Usage (Average) B": "CPU Usage (Average)",
+                        "CPU Usage (Max) B": "CPU Usage (Max)",
+                        "CPU Usage Average A": "CPU Average",
+                        "Compute Idle Cost A": "Compute Idle Cost",
+                        "Efficiency A": "Efficiency",
+                        "Max CPU B": "CPU Max",
+                        "RAM Request (Max) B": "RAM Request (Max)",
+                        "RAM Request Average (GB) A": "RAM Request",
+                        "RAM Usage (Average) B": "RAM Usage (Average)",
+                        "RAM Usage (Max) B": "RAM Usage (Max)",
+                        "RAM Usage Average (GB) A": "RAM Average"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 1,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Compute Idle Cost"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Efficiency"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percent"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge"
+                        }
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "min",
+                        "value": 0
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 239
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Compute Idle Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 109
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Name"
+                    },
+                    "properties": [
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "title": "Select Controller",
+                            "url": "/d/${__dashboard.uid}/${__dashboard.name}?orgId=${__org.id}&var-Kubecost_Data_Source=${Kubecost_Data_Source}&var-Cluster=${Cluster}&var-Namespace=${Namespace}&var-Controller=${__value.raw}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 224
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-12": {
+        "kind": "Panel",
+        "spec": {
+          "id": 12,
+          "title": "Controller - CPU Max Usage vs Requests Trend",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.timeseries[].items[].{\n  \"Name\": name,\n  \"CPU Max\": cpu.usage.max,\n  \"CPU Request\": cpu.request.max,\n  \"Time\": end\n} ",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/kubernetes/containers/resources/timeseries",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "controller"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "namespace:\"${Namespace}\"+cluster:\"${Cluster}\"+controllerName:\"${Controller}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Max CPU",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.timeseries[].items[].{\n  name: cpu.request.max,\n  \"Name\": name,\n  \"Time\": end\n} ",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/kubernetes/containers/resources/timeseries",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "controller"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "namespace:\"${Namespace}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Max Request",
+                    "hidden": true
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "convertFieldType",
+                  "spec": {
+                    "options": {
+                      "conversions": [
+                        {
+                          "dateFormat": "",
+                          "destinationType": "time",
+                          "targetField": "Time"
+                        },
+                        {}
+                      ],
+                      "fields": {}
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "formatTime",
+                  "spec": {
+                    "options": {
+                      "outputFormat": "DD/MM hh:mm",
+                      "timeField": "Time",
+                      "useTimezone": true
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "never",
+                "stacking": "none",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "none"
+                },
+                "xField": "Time",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 100
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "Millicores",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "CPU Max"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "red",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "CPU Request"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "green",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-14": {
+        "kind": "Panel",
+        "spec": {
+          "id": 14,
+          "title": "Controller - Requests & Usage",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.items[].{\n  \"Name\": name, \n  \"CPU Request (Max)\": cpu.request.max,\n  \"CPU Usage (Average)\": cpu.usage.avg,\n  \"CPU Usage (Max)\": cpu.usage.max,\n  \"RAM Request (Max)\": ram.request.max,\n  \"RAM Usage (Average)\": ram.usage.avg,\n  \"RAM Usage (Max)\": ram.usage.max\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/kubernetes/containers/resources",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "controller"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "namespace:\"${Namespace}\"+cluster:\"${Cluster}\"+controllerName:\"${Controller}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {},
+                      "includeByName": {},
+                      "indexByName": {
+                        "CPU Request (Max)": 1,
+                        "CPU Usage (Average)": 3,
+                        "CPU Usage (Max)": 2,
+                        "Name": 0,
+                        "RAM Request (Max)": 4,
+                        "RAM Usage (Average)": 6,
+                        "RAM Usage (Max)": 5
+                      },
+                      "renameByName": {
+                        "CPU Request (Max)": "CPU Request (Max)",
+                        "CPU Request (Max) B": "CPU Request (Max)",
+                        "CPU Request Average A": "CPU Request",
+                        "CPU Usage (Average)": "CPU Usage (Average)",
+                        "CPU Usage (Average) B": "CPU Usage (Average)",
+                        "CPU Usage (Max)": "CPU Usage (Max)",
+                        "CPU Usage (Max) B": "CPU Usage (Max)",
+                        "CPU Usage Average A": "CPU Average",
+                        "Compute Idle Cost A": "Compute Idle Cost",
+                        "Efficiency A": "Efficiency",
+                        "Max CPU B": "CPU Max",
+                        "RAM Request (Max)": "RAM Request (Max)",
+                        "RAM Request (Max) B": "RAM Request (Max)",
+                        "RAM Request Average (GB) A": "RAM Request",
+                        "RAM Usage (Average)": "RAM Usage (Average)",
+                        "RAM Usage (Average) B": "RAM Usage (Average)",
+                        "RAM Usage (Max)": "RAM Usage (Max)",
+                        "RAM Usage (Max) B": "RAM Usage (Max)",
+                        "RAM Usage Average (GB) A": "RAM Average"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "displayMode": "basic",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [],
+                  "fields": "",
+                  "values": true
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byRegexp",
+                      "scope": "series",
+                      "options": "RAM.*"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "decmbytes"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-18": {
+        "kind": "Panel",
+        "spec": {
+          "id": 18,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "${Controller}",
+                "mode": "markdown"
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-19": {
+        "kind": "Panel",
+        "spec": {
+          "id": 19,
+          "title": "Pod (Individual) - CPU Max Usage & Request Trend",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.timeseries[].items[].{\n  name:  cpu.usage.max,\n  \"Time\": end\n} ",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/kubernetes/containers/resources/timeseries",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "pod"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "namespace:\"${Namespace}\"+cluster:\"${Cluster}\"+controllerName:\"${Controller}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Max CPU",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.timeseries[].items[].{\n  \"CPU Request Max\": cpu.request.max,\n  \"Time\": end\n} ",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/kubernetes/containers/resources/timeseries",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "pod"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "namespace:\"${Namespace}\"+cluster:\"${Cluster}\"+controllerName:\"${Controller}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Max Request",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "convertFieldType",
+                  "spec": {
+                    "options": {
+                      "conversions": [
+                        {
+                          "dateFormat": "",
+                          "destinationType": "time",
+                          "targetField": "Time"
+                        },
+                        {}
+                      ],
+                      "fields": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "Millicores",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 50,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": true,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "CPU Max"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "red",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "CPU Request Max"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "green",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "custom.fillOpacity",
+                        "value": 0
+                      },
+                      {
+                        "id": "custom.lineStyle",
+                        "value": {
+                          "dash": [
+                            10,
+                            10
+                          ],
+                          "fill": "dash"
+                        }
+                      },
+                      {
+                        "id": "custom.showPoints",
+                        "value": "never"
+                      },
+                      {
+                        "id": "custom.stacking",
+                        "value": {
+                          "group": "A",
+                          "mode": "none"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 10,
+              "height": 20,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-11"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 10,
+              "y": 0,
+              "width": 4,
+              "height": 2,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-18"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 14,
+              "y": 0,
+              "width": 10,
+              "height": 8,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-14"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 10,
+              "y": 8,
+              "width": 14,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-12"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 10,
+              "y": 17,
+              "width": 14,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-19"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-7d",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Kubecost Workload Usage & Requests",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "Kubecost_Data_Source",
+          "pluginId": "yesoreyeram-infinity-datasource",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "current": {
+            "text": "kc-hastings-direct-staging",
+            "value": "ffl5209rn40sgf"
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "Cluster",
+          "current": {
+            "text": "aks-core-dev",
+            "value": "aks-core-dev"
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "yesoreyeram-infinity-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "${Kubecost_Data_Source}"
+            },
+            "spec": {
+              "infinityQuery": {
+                "columns": [],
+                "data": "values\nfoo\nbar\nbaz",
+                "filters": [],
+                "format": "table",
+                "parser": "backend",
+                "refId": "",
+                "root_selector": "$.data[].*",
+                "source": "url",
+                "type": "json",
+                "url": "/model/allocation/autocomplete",
+                "url_options": {
+                  "data": "",
+                  "method": "GET",
+                  "params": [
+                    {
+                      "key": "field",
+                      "value": "cluster"
+                    },
+                    {
+                      "key": "window",
+                      "value": "${__from:date:seconds},${__to:date:seconds}"
+                    }
+                  ]
+                }
+              },
+              "queryType": "infinity",
+              "refId": "variable"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "Namespace",
+          "current": {
+            "text": "guidewire-dev1-ns",
+            "value": "guidewire-dev1-ns"
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "yesoreyeram-infinity-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "${Kubecost_Data_Source}"
+            },
+            "spec": {
+              "infinityQuery": {
+                "columns": [],
+                "data": "values\nfoo\nbar\nbaz",
+                "filters": [],
+                "format": "table",
+                "parser": "backend",
+                "refId": "",
+                "root_selector": "$.data[].*",
+                "source": "url",
+                "type": "json",
+                "url": "/model/allocation/autocomplete",
+                "url_options": {
+                  "data": "",
+                  "method": "GET",
+                  "params": [
+                    {
+                      "key": "field",
+                      "value": "namespace"
+                    },
+                    {
+                      "key": "window",
+                      "value": "${__from:date:seconds},${__to:date:seconds}"
+                    }
+                  ]
+                }
+              },
+              "queryType": "infinity",
+              "refId": "variable"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "Controller",
+          "current": {
+            "text": "billing-center-dev1-dwn",
+            "value": "billing-center-dev1-dwn"
+          },
+          "hide": "inControlsMenu",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "yesoreyeram-infinity-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "${Kubecost_Data_Source}"
+            },
+            "spec": {
+              "infinityQuery": {
+                "columns": [],
+                "data": "values\nfoo\nbar\nbaz",
+                "filters": [],
+                "format": "table",
+                "parser": "backend",
+                "refId": "",
+                "root_selector": "$.data[].*",
+                "source": "url",
+                "type": "json",
+                "url": "/model/allocation/autocomplete",
+                "url_options": {
+                  "data": "",
+                  "method": "GET",
+                  "params": [
+                    {
+                      "key": "field",
+                      "value": "controllerName"
+                    },
+                    {
+                      "key": "window",
+                      "value": "${__from:date:seconds},${__to:date:seconds}"
+                    }
+                  ]
+                }
+              },
+              "queryType": "infinity",
+              "refId": "variable"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": false
+        }
+      }
+    ]
+  }
+}
