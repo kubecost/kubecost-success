@@ -5,8 +5,8 @@
     "name": "asgb8nz",
     "namespace": "default",
     "uid": "b6022820-e2e7-4411-a9f2-2826c55db7fe",
-    "resourceVersion": "1783516210007017",
-    "generation": 7,
+    "resourceVersion": "1784647850446008",
+    "generation": 13,
     "creationTimestamp": "2026-05-05T10:00:34Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "1"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
       "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
-      "grafana.app/updatedTimestamp": "2026-07-08T13:10:09Z"
+      "grafana.app/updatedTimestamp": "2026-07-21T15:30:50Z"
     }
   },
   "spec": {
@@ -350,11 +350,12 @@
                       },
                       "spec": {
                         "columns": [],
+                        "computed_columns": [],
                         "filters": [],
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  properties.cluster: totalCost, \n  \"Time\": end\n}  ",
+                        "root_selector": "$.data[].*.{\n  \"Cluster\": properties.cluster,\n  \"Cost\": totalCost\n}  ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/assets",
@@ -397,6 +398,43 @@
                         {}
                       ],
                       "fields": {}
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "rowsToFields",
+                  "spec": {
+                    "options": {
+                      "mappings": [
+                        {
+                          "fieldName": "Cluster",
+                          "handlerKey": "field.name"
+                        },
+                        {
+                          "fieldName": "Cost",
+                          "handlerKey": "field.value"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {},
+                      "includeByName": {},
+                      "indexByName": {},
+                      "orderBy": [
+                        {
+                          "desc": false,
+                          "type": "name"
+                        }
+                      ],
+                      "orderByMode": "auto",
+                      "renameByName": {}
                     }
                   }
                 }
@@ -486,7 +524,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  properties.cluster: totalCost, \n  \"Time\": end\n}  ",
+                        "root_selector": "$.data[].*.{\n  \"Cluster\": properties.cluster,\n  \"Cost\": totalCost, \n  \"Time\": end\n}  ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/assets",
@@ -527,6 +565,21 @@
                       "fields": {}
                     }
                   }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "partitionByValues",
+                  "spec": {
+                    "options": {
+                      "fields": [
+                        "Cluster"
+                      ],
+                      "keepFields": false,
+                      "naming": {
+                        "asLabels": false
+                      }
+                    }
+                  }
                 }
               ],
               "queryOptions": {}
@@ -550,8 +603,8 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
+                  "mode": "multi",
+                  "sort": "desc"
                 }
               },
               "fieldConfig": {
@@ -601,7 +654,7 @@
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
-                      "mode": "none"
+                      "mode": "normal"
                     },
                     "thresholdsStyle": {
                       "mode": "off"
@@ -1028,7 +1081,7 @@
         "kind": "Panel",
         "spec": {
           "id": 9,
-          "title": "Kubernetes Idle Cost Trends by Trends",
+          "title": "Kubernetes Idle Cost Trends by Cluster",
           "description": "",
           "links": [],
           "data": {
@@ -1052,7 +1105,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data.sets[].allocations.*.{\n  name: totalCost, \n  \"Time\": end\n}  ",
+                        "root_selector": "$.data.sets[].allocations.*.{\n  \"Cluster\": name,\n  \"Cost\": totalCost, \n  \"Time\": end\n}  ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/allocation/summary",
@@ -1104,19 +1157,27 @@
                 },
                 {
                   "kind": "Transformation",
+                  "group": "partitionByValues",
+                  "spec": {
+                    "options": {
+                      "fields": [
+                        "Cluster"
+                      ],
+                      "keepFields": false,
+                      "naming": {
+                        "asLabels": false
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
                   "group": "filterFieldsByName",
                   "spec": {
                     "options": {
                       "byVariable": false,
                       "include": {
-                        "names": [
-                          "idle:kc-demo-dev2",
-                          "idle:kc-demo-prod",
-                          "idle:kc-demo-rosa",
-                          "idle:kc-demo-stage",
-                          "Time"
-                        ],
-                        "pattern": "idle(.*)"
+                        "pattern": "(.*)idle(.*)"
                       }
                     }
                   }
@@ -1143,7 +1204,7 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "mode": "single",
+                  "mode": "multi",
                   "sort": "none"
                 }
               },
@@ -1173,9 +1234,9 @@
                     "axisLabel": "",
                     "axisPlacement": "auto",
                     "barAlignment": 0,
-                    "barWidthFactor": 0.6,
-                    "drawStyle": "line",
-                    "fillOpacity": 0,
+                    "barWidthFactor": 0.5,
+                    "drawStyle": "bars",
+                    "fillOpacity": 100,
                     "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
@@ -1184,17 +1245,17 @@
                     },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
-                    "lineWidth": 1,
+                    "lineWidth": 2,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
                     },
                     "showPoints": "auto",
                     "showValues": false,
-                    "spanNulls": true,
+                    "spanNulls": false,
                     "stacking": {
                       "group": "A",
-                      "mode": "none"
+                      "mode": "normal"
                     },
                     "thresholdsStyle": {
                       "mode": "off"

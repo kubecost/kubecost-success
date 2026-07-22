@@ -5,8 +5,8 @@
     "name": "ad8tlfc",
     "namespace": "default",
     "uid": "3671a753-e156-4c96-adc2-d161c373a8b4",
-    "resourceVersion": "1783518746067009",
-    "generation": 88,
+    "resourceVersion": "1784198136442995",
+    "generation": 89,
     "creationTimestamp": "2026-05-19T09:50:23Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "3032387419992064"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
       "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
-      "grafana.app/updatedTimestamp": "2026-07-08T13:52:26Z"
+      "grafana.app/updatedTimestamp": "2026-07-16T10:35:36Z"
     }
   },
   "spec": {
@@ -314,7 +314,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data.timeseries[].items[].{\n  \"Name\": name,\n  \"CPU Max\": cpu.usage.max,\n  \"CPU Request\": cpu.request.max,\n  \"Time\": end\n} ",
+                        "root_selector": "$.data.timeseries[].items[].{\n  \"Name\": name,\n  \"CPU Average\": cpu.usage.avg,\n  \"CPU Max\": cpu.usage.max,\n  \"CPU Request\": cpu.request.max,\n  \"Time\": end\n} ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/kubernetes/containers/resources/timeseries",
@@ -518,6 +518,22 @@
                         "id": "color",
                         "value": {
                           "fixedColor": "green",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "CPU Average"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "purple",
                           "mode": "fixed"
                         }
                       }
