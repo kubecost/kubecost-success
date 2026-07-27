@@ -5,8 +5,8 @@
     "name": "adn7swr",
     "namespace": "default",
     "uid": "425198c3-e2ef-40b5-9df4-ec4097224de2",
-    "resourceVersion": "1784648444609995",
-    "generation": 9,
+    "resourceVersion": "1784804551363988",
+    "generation": 11,
     "creationTimestamp": "2026-05-05T09:59:59Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "2464972063019008"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
       "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
-      "grafana.app/updatedTimestamp": "2026-07-21T15:40:44Z"
+      "grafana.app/updatedTimestamp": "2026-07-23T11:02:31Z"
     }
   },
   "spec": {
@@ -72,7 +72,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  \"Namespace/Cluster\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Compute Idle Cost\": (cpuCost * (1 - cpuEfficiency)) + (ramCost * (1 - ramEfficiency))\n}",
+                        "root_selector": "$.data[].*.{\n  \"Namespace/Cluster\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Compute Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
                         "source": "url",
                         "summarizeBy": "",
                         "type": "json",
