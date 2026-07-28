@@ -285,7 +285,7 @@ EOF
 setup_helm_repos() {
     log_info "Adding Helm repositories..."
     
-    helm repo add kubecost https://kubecost.github.io/cost-analyzer/ || true
+    helm repo add kubecost https://kubecost.github.io/kubecost/ || true
     helm repo update
     
     log_success "Helm repositories configured"
@@ -391,7 +391,7 @@ if [ ! -f "values.yaml" ]; then
 fi
 
 # Deploy with Helm
-helm upgrade --install kubecost-agent kubecost/cost-analyzer \
+helm upgrade --install kubecost-agent kubecost/kubecost \
     --namespace kubecost \
     --create-namespace \
     --values values.yaml \
@@ -403,7 +403,7 @@ echo "Check status with:"
 echo "  kubectl get pods -n kubecost"
 echo ""
 echo "View logs with:"
-echo "  kubectl logs -n kubecost -l app.kubernetes.io/name=cost-analyzer -f"
+echo "  kubectl logs -n kubecost -l app.kubernetes.io/name=finops-agent -f"
 EOF
 
     chmod +x examples/test-deploy.sh
@@ -454,7 +454,7 @@ print_summary() {
     echo ""
     echo "4. Verify deployment:"
     echo "   kubectl get pods -n kubecost"
-    echo "   kubectl logs -n kubecost -l app.kubernetes.io/name=cost-analyzer"
+    echo "   kubectl logs -n kubecost -l app.kubernetes.io/name=finops-agent"
     echo ""
     echo "5. Clean up when done:"
     echo "   kind delete cluster --name kubecost-test"

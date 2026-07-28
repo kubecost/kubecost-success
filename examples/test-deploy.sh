@@ -12,7 +12,7 @@ if [ ! -f "values.yaml" ]; then
 fi
 
 # Deploy with Helm
-helm upgrade --install kubecost-agent kubecost/cost-analyzer \
+helm upgrade --install kubecost-agent kubecost/kubecost \
     --namespace kubecost \
     --create-namespace \
     --values values.yaml \
@@ -24,4 +24,4 @@ echo "Check status with:"
 echo "  kubectl get pods -n kubecost"
 echo ""
 echo "View logs with:"
-echo "  kubectl logs -n kubecost -l app.kubernetes.io/name=cost-analyzer -f"
+echo "  kubectl logs -n kubecost -l app.kubernetes.io/name=finops-agent -f"
