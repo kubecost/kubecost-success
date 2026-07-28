@@ -1,0 +1,47 @@
+## Kubecost Agent Cluster - Azure Workload Identity Configuration
+## Use this values file when authenticating via Azure AD Workload Identity (secretless).
+## Prerequisites: AKS cluster must have OIDC Issuer and Workload Identity enabled.
+## See: azure/azure-workload-identity-checklist.md
+
+global:
+  clusterId: CLUSTER_NAME  # REQUIRED
+  federatedStorage:
+    config: ""
+    existingSecret: ""
+
+## Service account with Workload Identity annotation.
+## The clientID must match the Managed Identity used for the federated credential.
+serviceAccount:
+  annotations:
+    azure.workload.identity/client-id: "MANAGED_IDENTITY_CLIENT_ID"
+
+## Pod label required for Azure Workload Identity webhook injection.
+## global.additionalLabels propagates the label to all pods (required by the mutating webhook).
+global:
+  additionalLabels:
+    azure.workload.identity/use: "true"
+
+finopsagent:
+  enabled: true
+  agent:
+    collectorDataSource:
+      enabled: true
+      scrapeInterval: 30s
+      retention10m: 6
+      retention1h: 3
+      retention1d: 2
+    exporter:
+      emissionInterval: 1m
+
+frontend:
+  enabled: false
+clusterController:
+  enabled: false
+cloudCost:
+  enabled: false
+forecasting:
+  enabled: false
+localStore:
+  enabled: false
+networkCosts:
+  enabled: false

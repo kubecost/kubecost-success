@@ -1,0 +1,98 @@
+## Kubecost Primary Cluster - Azure Workload Identity Configuration
+## Use this values file when authenticating via Azure AD Workload Identity (secretless).
+## Prerequisites: AKS cluster must have OIDC Issuer and Workload Identity enabled.
+## See: azure/azure-workload-identity-checklist.md
+
+global:
+  ## @param clusterId The id of the cluster REQUIRED
+  clusterId: CLUSTER_NAME
+  federatedStorage:
+    config: ""
+    existingSecret: ""
+  platform:
+    cicd:
+      enabled: true
+      skipSanityChecks: true
+  acknowledged: true
+
+## Service account with Workload Identity annotation.
+## The clientID must match the Managed Identity used for the federated credential.
+serviceAccount:
+  annotations:
+    azure.workload.identity/client-id: "MANAGED_IDENTITY_CLIENT_ID"
+
+## Pod label required for Azure Workload Identity webhook injection.
+## global.additionalLabels propagates the label to all pods (required by the mutating webhook).
+global:
+  additionalLabels:
+    azure.workload.identity/use: "true"
+
+cloudCost:
+  enabled: false
+  cloudIntegrationSecret: cloud-integration  # only runs on primary cluster
+  serviceAccountName: azure-service-account-secret
+  image:
+    registry: ""
+    repository: kubecost/cost-model
+    tag: ""
+  fullImageName: ""
+  imagePullPolicy: IfNotPresent
+
+aggregator:
+  enabled: true
+  image:
+    registry: ""
+    repository: kubecost/cost-model
+    tag: ""
+  fullImageName: ""
+  imagePullPolicy: IfNotPresent
+  retention1d: 91
+  retention1h: 49
+  retention10m: 36
+  persistentConfigsStorage:
+    storageClass: ""
+    storageRequest: 1Gi
+  aggregatorDbStorage:
+    storageClass: ""
+    storageRequest: 128Gi
+  resources:
+    limits: {}
+    requests:
+      memory: 3Gi
+      cpu: 100m
+
+diagnostics:
+  enabled: true
+  retention: 30d
+
+finopsagent:
+  enabled: true
+  agent:
+    collectorDataSource:
+      enabled: true
+      scrapeInterval: 30s
+      retention10m: 6
+      retention1h: 3
+      retention1d: 2
+    exporter:
+      emissionInterval: 1m
+
+networkCosts:
+  enabled: false
+forecasting:
+  enabled: false
+clusterController:
+  enabled: false
+
+kubecostProductConfigs:
+  productKey:
+    enabled: false
+    key: ""
+    secretname: ""
+    mountPath: ""
+  azureOfferDurableID: MS-AZR-0003P
+  azureBillingRegion: US
+  currencyCode: USD
+
+localStore:
+  enabled: true
