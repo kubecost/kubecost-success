@@ -5,8 +5,8 @@
     "name": "asgb8nl",
     "namespace": "default",
     "uid": "6aa2f250-21e9-4820-8a3b-da7190db8934",
-    "resourceVersion": "1783517301288002",
-    "generation": 7,
+    "resourceVersion": "1784648006356005",
+    "generation": 8,
     "creationTimestamp": "2026-05-05T10:00:13Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "2465031819268096"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
       "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
-      "grafana.app/updatedTimestamp": "2026-07-08T13:28:21Z"
+      "grafana.app/updatedTimestamp": "2026-07-21T15:33:26Z"
     }
   },
   "spec": {
@@ -323,7 +323,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  properties.cluster: totalCost, \n  \"Time\": end\n}  ",
+                        "root_selector": "$.data[].*.{\n  \"Cluster\": properties.cluster,\n  \"Cost\": totalCost, \n  \"Time\": end\n}  ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/assets",
@@ -362,6 +362,21 @@
                         {}
                       ],
                       "fields": {}
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "partitionByValues",
+                  "spec": {
+                    "options": {
+                      "fields": [
+                        "Cluster"
+                      ],
+                      "keepFields": false,
+                      "naming": {
+                        "asLabels": false
+                      }
                     }
                   }
                 }
@@ -973,7 +988,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  properties.cluster: totalCost, \n  \"Time\": end\n}  ",
+                        "root_selector": "$.data[].*.{\n  \"Cluster\": properties.cluster,\n  \"Cost\": totalCost, \n  \"Time\": end\n}  ",
                         "source": "url",
                         "type": "json",
                         "url": "/model/assets",
@@ -1012,6 +1027,21 @@
                         {}
                       ],
                       "fields": {}
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "partitionByValues",
+                  "spec": {
+                    "options": {
+                      "fields": [
+                        "Cluster"
+                      ],
+                      "keepFields": false,
+                      "naming": {
+                        "asLabels": false
+                      }
                     }
                   }
                 }

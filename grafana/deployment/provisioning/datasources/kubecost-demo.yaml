@@ -1,0 +1,7 @@
+apiVersion: 1
+
+datasources:
+  - name: Kubecost-demo-xyz
+    type: yesoreyeram-infinity-datasource
+    url: https://demo.kubecost.xyz
+    editable: true
