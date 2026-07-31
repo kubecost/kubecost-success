@@ -1,0 +1,14 @@
+type: AZURE
+config:
+  storage_account: "AZ_object_store_storage_account"
+  container: "AZ_object_store_container"
+  # user_assigned_id: the clientId of the User-Assigned Managed Identity.
+  # When set, the storage client uses azidentity.ManagedIdentityCredential scoped to
+  # this client ID. When omitted entirely, it falls back to DefaultAzureCredential.
+  # No storage_account_key or storage_connection_string needed.
+  # Ref: opencost/opencost core/pkg/storage/azurestorage.go getContainerClient()
+  user_assigned_id: "MANAGED_IDENTITY_CLIENT_ID"
+  # endpoint is only needed if primary blob service endpoint domain is not blob.core.windows.net
+  # Example: blob.core.chinacloudapi.cn
+  # endpoint: "AZ_object_store_endpoint"
+  max_retries: 0
