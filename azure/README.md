@@ -41,13 +41,13 @@ It is recommended to deploy Kubecost Enterprise in this order. Configuring the A
    - **Reach out to your account rep to obtain a license key. This will need to be added to the `kubecostProductConfigs.productKey.key` field in the `values-azure-primary.yaml` file.**
    
 
-   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with the following custom values configured. 
+   - [ ] Run helm install against the helm chart using the override [values-azure-primary.yaml](/azure/values-azure-primary.yaml) file with the following custom values configured.
 ```bash
-      @param global.clusterId=CLUSTER_NAME 
+      @param global.clusterId=CLUSTER_NAME
       @param global.federatedStorage.fileName=federated-store.yaml
       @param cloudCost.enabled=true
       @param cloudCost.cloudIntegration.secret=cloud-integration (only runs on primary)
-      @param kubecostProductConfigs.productKey.enabled=true 
+      @param kubecostProductConfigs.productKey.enabled=true
       @param kubecostProductConfigs.productKey.key=YOUR_PRODUCT_KEY (only runs on primary)
 
       Other options for the productKey are configuring a secret or mounting the key:
