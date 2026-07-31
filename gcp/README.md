@@ -42,8 +42,10 @@ helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ ku
    - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/gcp/values-gcp-secondary.yaml).
 
 ```bash
-helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ kubecost   --namespace kedd-primary --create-namespace \
--f values-gcp-primary.yaml
+helm upgrade --install kubecost \
+  --repo https://kubecost.github.io/kubecost/ kubecost \
+  --namespace kubecost \
+  -f values-gcp-secondary.yaml
 ```
   - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
