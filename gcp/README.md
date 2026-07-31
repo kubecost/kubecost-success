@@ -50,9 +50,9 @@ helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ ku
 
 ## Optional Configuration
 
-4. **Network Costs Daemonset Configured** 
+4. **Network Costs Daemonset Configured**
 
-Please Note: The network cost daemonset will experience CPU throttling and higher memory consumption in large environments where there are several hundred thousand or more unique containers running per day. 
+Please Note: The network cost daemonset will experience CPU throttling and higher memory consumption in large environments where there are several hundred thousand or more unique containers running per day.
 
    - [ ] Review [Configuration Guide](https://www.ibm.com/docs/en/kubecost/self-hosted/3.x?topic=configuration-network-cost)
    - [ ] Apply [Network Cost Config](/azure/network-costs-enabled.yaml)
