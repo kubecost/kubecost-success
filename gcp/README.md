@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for deploying Kubecost in GCP.
    - [ ] Configure [federated-store.yaml](/gcp/federated-store.yaml) pointing to the google storage bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
 ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
 ```
 
 2. **Primary Cluster Installation**
