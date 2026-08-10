@@ -5,8 +5,8 @@
     "name": "adcg97b",
     "namespace": "default",
     "uid": "e30f07ca-a1fa-472d-886b-92f34c26a94f",
-    "resourceVersion": "1785243114510002",
-    "generation": 27,
+    "resourceVersion": "1785772950662014",
+    "generation": 33,
     "creationTimestamp": "2026-06-24T15:51:50Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "2653254574854144"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
       "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
-      "grafana.app/updatedTimestamp": "2026-07-28T12:51:54Z"
+      "grafana.app/updatedTimestamp": "2026-08-03T16:02:30Z"
     }
   },
   "spec": {
@@ -48,7 +48,7 @@
         "kind": "Panel",
         "spec": {
           "id": 11,
-          "title": "Namespace Improvements",
+          "title": "Namespace Workload Improvements",
           "description": "",
           "links": [],
           "data": {
@@ -72,7 +72,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  \"Name\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Compute Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
+                        "root_selector": "$.data[].*.{\n  \"Name\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
                         "source": "url",
                         "summarizeBy": "",
                         "type": "json",
@@ -177,8 +177,8 @@
                       "mode": "reduceRow",
                       "reduce": {
                         "include": [
-                          "Compute Idle Cost Current",
-                          "Compute Idle Cost Previous"
+                          "Idle Cost Current",
+                          "Idle Cost Previous"
                         ],
                         "reducer": "diff"
                       },
@@ -227,12 +227,12 @@
                       "excludeByName": {},
                       "includeByName": {},
                       "indexByName": {
-                        "Compute Idle Cost Current": 1,
-                        "Compute Idle Cost Previous": 2,
                         "Efficiency Current": 4,
                         "Efficiency Improvement": 6,
                         "Efficiency Previous": 5,
+                        "Idle Cost Current": 1,
                         "Idle Cost Improvement": 3,
+                        "Idle Cost Previous": 2,
                         "Name": 0
                       },
                       "renameByName": {
@@ -338,7 +338,8 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "Compute Idle Cost"
+                      "scope": "series",
+                      "options": "Idle Cost"
                     },
                     "properties": [
                       {
@@ -472,7 +473,7 @@
                         "format": "table",
                         "global_query_id": "",
                         "parser": "backend",
-                        "root_selector": "$.data[].*.{\n  \"Name\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Compute Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
+                        "root_selector": "$.data[].*.{\n  \"Name\": name, \n  \"Efficiency\": totalEfficiency*100,\n  \"Idle Cost\": ((cpuCost + cpuCostAdjustment) * (1 - cpuEfficiency)) + ((ramCost + ramCostAdjustment) * (1 - ramEfficiency))\n}",
                         "source": "url",
                         "summarizeBy": "",
                         "type": "json",
@@ -1253,6 +1254,289 @@
             }
           }
         }
+      },
+      "panel-21": {
+        "kind": "Panel",
+        "spec": {
+          "id": 21,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.__idle__{\n  \"Infrastructure Idle Cost\": totalCost\n}",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "cluster"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 22
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "concatenate",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Infrastructure Idle Cost Improvement",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "A · Infrastructure Idle Cost"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current · Infrastructure Idle Cost"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "replaceFields": true
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-22": {
+        "kind": "Panel",
+        "spec": {
+          "id": 22,
+          "title": "Infrastructure Idle Cost (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.__idle__{\n  \"Infrastructure Idle Cost\": totalCost\n}",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "cluster"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "concatenate",
+                  "spec": {
+                    "options": {}
+                  }
+                }
+              ],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
       }
     },
     "layout": {
@@ -1304,6 +1588,19 @@
                         "height": 3,
                         "element": {
                           "kind": "ElementReference",
+                          "name": "panel-21"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 18,
+                        "y": 0,
+                        "width": 6,
+                        "height": 3,
+                        "element": {
+                          "kind": "ElementReference",
                           "name": "panel-18"
                         }
                       }
@@ -1338,6 +1635,15 @@
                   "columnWidthMode": "standard",
                   "rowHeightMode": "standard",
                   "items": [
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-22"
+                        }
+                      }
+                    },
                     {
                       "kind": "AutoGridLayoutItem",
                       "spec": {
