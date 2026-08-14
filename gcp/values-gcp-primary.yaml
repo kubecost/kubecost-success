@@ -22,6 +22,45 @@ global:
 ## Values for the finops-agent sub-chart
 ## Ref: https://github.com/kubecost/finops-agent-chart/
 ##
+
+localStore:
+  enabled: true # Set to false to disable localStore when using federated storage.
+
+aggregator:
+  enabled: true
+  retention1d: 91
+  retention1h: 49
+  retention10m: 36
+  persistentConfigsStorage:
+    storageClass: ""  # Specify a storage class name to use a non-default storage class
+    storageRequest: 1Gi
+  aggregatorDbStorage:
+    storageClass: ""  # Specify a storage class name to use a non-default storage class
+    storageRequest: 128Gi
+  resources: 
+    limits: {}
+      # memory: ""
+      # cpu: ""
+    requests:
+      memory: 3Gi
+      cpu: 100m
+
+cloudCost:
+  enabled: true
+  ## Retention values determine for what duration into the past data cloud billing data will be
+  ## queried and processed into ETL.
+  retention1d: 91
+  ## Specify an existing Kubernetes Secret holding the cloud integration information. This Secret must contain
+  ## a key with name `cloud-integration.json` and the contents must be in a specific format. It is expected
+  ## to exist in the release Namespace. This is mutually exclusive with cloudIntegrationJSON where only one must be defined.
+  cloudIntegrationSecret: ""
+
+networkCosts:
+  enabled: false
+
+forecasting:
+  enabled: false
+
 finopsagent:
   enabled: true
   # serviceAccount:
@@ -36,25 +75,10 @@ finopsagent:
       retention10m: 6
       retention1h: 3
       retention1d: 2
-    exporter:
-      ## Emission interval is the interval at which the agent will emit metrics to the object storage.
-      ## This can be increased to reduce the number of object (versions) written to the object storage when versioning is enabled.
-      emissionInterval: 1m
-networkCosts:
-  enabled: false
-forecasting:
-  enabled: false
+
 kubecostProductConfigs:
   productKey:
-    enabled: false
+    enabled: true # Set to false if not using Kubecost Enterprise features. When enabled, you must provide either a secretname or mountPath for the product key.
     key: ""
     secretname: ""  # Reference an existing k8s secret created from a file named productkey.json of format { "key": "enterprise-key-here" }. If the secretname is specified, a configmap with the key will not be created.
     mountPath: ""  # (use instead of secretname) Declare the path at which the product key file is mounted (eg. "/some/custom/path/productkey.json" by a secrets provisioner). The file must be of format { "key": "enterprise-key-here" }.
-## Kubecost Local Store
-## When no federated storage bucket is configured, localStore provides local storage via a
-## container, PVC, and service for agent and aggregator communication.
-##
-localStore:
-  enabled: true
-  
-
