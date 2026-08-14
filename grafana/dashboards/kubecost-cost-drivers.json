@@ -1,0 +1,3391 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "adcg97c",
+    "namespace": "default",
+    "uid": "2c446be3-4586-4143-af7e-e325e3500bad",
+    "resourceVersion": "1786722309861986",
+    "generation": 171,
+    "creationTimestamp": "2026-08-05T09:46:15Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "4007855563714560"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:dfl4wbgz6oqv4a",
+      "grafana.app/folder": "",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
+      "grafana.app/updatedBy": "user:dfl4wbgz6oqv4a",
+      "grafana.app/updatedTimestamp": "2026-08-14T15:45:09Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-15": {
+        "kind": "Panel",
+        "spec": {
+          "id": 15,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.combined.cost",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/totals",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 16
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "concatenate",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Realized Savings",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous · Previous"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current · Current"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "include": [
+                          "Current Current",
+                          "Previous Previous"
+                        ],
+                        "reducer": "diff"
+                      },
+                      "replaceFields": true
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "id": 16,
+          "title": "Cloud Total Cost (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.combined.cost",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/totals",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "displayMode": "gradient",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-17": {
+        "kind": "Panel",
+        "spec": {
+          "id": 17,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.combined.cost",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/totals",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 16
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "concatenate",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Total Cost Percentage",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current · Current"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous · Previous"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "include": [
+                          "Current Current",
+                          "Previous Previous"
+                        ],
+                        "reducer": "diff"
+                      },
+                      "replaceFields": false,
+                      "unary": {
+                        "fieldName": "Current · Current",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Total Cost Reduction",
+                      "binary": {
+                        "left": {
+                          "fixed": "1"
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Total Cost Percentage"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "replaceFields": true
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Total Cost Reduction"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-18": {
+        "kind": "Panel",
+        "spec": {
+          "id": 18,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.combined.cost",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/totals",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Cloud Total Cost (Current Period)",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "text"
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Total Cost Reduction"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-22": {
+        "kind": "Panel",
+        "spec": {
+          "id": 22,
+          "title": "Infrastructure Idle Cost (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.__idle__{\n  \"Infrastructure Idle Cost\": totalCost\n}",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:seconds},${__to:date:seconds}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "cluster"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "concatenate",
+                  "spec": {
+                    "options": {}
+                  }
+                }
+              ],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-23": {
+        "kind": "Panel",
+        "spec": {
+          "id": 23,
+          "title": "Team Subtotals",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.*.{\n  \"Team\": name, \n  \"Cost\": totalCost,\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "label:team"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "idle",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 24
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data[].{\n  \"Team\": name,\n  \"Cost\": cost  * (1 - kubernetesPercent),\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/table",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "label:team"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Cloud Current",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Team",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Current Days",
+                      "mode": "reduceRow",
+                      "reduce": {
+                        "include": [
+                          "Days Current",
+                          "Days Cloud Current"
+                        ],
+                        "reducer": "lastNotNull"
+                      },
+                      "replaceFields": false
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Previous Days",
+                      "mode": "reduceRow",
+                      "reduce": {
+                        "include": [
+                          "Days Previous",
+                          "Days Cloud Previous"
+                        ],
+                        "reducer": "lastNotNull"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Current $/TOTAL",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Cost Current"
+                          }
+                        },
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Cost Cloud Current"
+                          }
+                        }
+                      },
+                      "mode": "reduceRow",
+                      "reduce": {
+                        "include": [
+                          "Cost Current",
+                          "Cost Cloud Current"
+                        ],
+                        "reducer": "sum"
+                      },
+                      "replaceFields": false
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Previous $/TOTAL",
+                      "mode": "reduceRow",
+                      "reduce": {
+                        "include": [
+                          "Cost Previous",
+                          "Cost Cloud Previous"
+                        ],
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Current $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/TOTAL"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current Days"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Previous $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/TOTAL"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous Days"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Cost Cloud Current": true,
+                        "Cost Cloud Previous": true,
+                        "Cost Current": true,
+                        "Cost Previous": true,
+                        "Current $/TOTAL": false,
+                        "Current Days": true,
+                        "Days": true,
+                        "Days Cloud Current": true,
+                        "Days Cloud Previous": true,
+                        "Days Current": true,
+                        "Days Previous": true,
+                        "Previous Days": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Cost Cloud Current": 6,
+                        "Cost Cloud Previous": 8,
+                        "Cost Current": 5,
+                        "Cost Previous": 7,
+                        "Current $/DAY": 4,
+                        "Current $/TOTAL": 2,
+                        "Days Current": 9,
+                        "Days Previous": 10,
+                        "Previous $/DAY": 3,
+                        "Previous $/TOTAL": 1,
+                        "Team": 0
+                      },
+                      "renameByName": {
+                        "Cost Current": "Current $/TOTAL",
+                        "Cost Previous": "Previous $/TOTAL",
+                        "Daily Cost Current": "Current $/DAY",
+                        "Daily Cost Previous": "Previous $/DAY"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "window": {
+                        "reducer": "mean",
+                        "windowAlignment": "trailing",
+                        "windowSize": 0.1,
+                        "windowSizeMode": "percentage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^%",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "^/DAY"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "^/DAY"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^%"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^/DAY"
+                    },
+                    "properties": [
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Team"
+                    },
+                    "properties": [
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "title": "Select Team",
+                            "url": "/d/${__dashboard.uid}/${__dashboard.name}?orgId=${__org.id}&var-Kubecost_Data_Source=${Kubecost_Data_Source}&var-timeshift=${timeshift}&var-Currency=${Currency}&var-Team=${__value.raw}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-24": {
+        "kind": "Panel",
+        "spec": {
+          "id": 24,
+          "title": "Team Subtotals (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.*.{\n  \"Team\": name, \n  \"Cost\": totalCost,\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "label:team"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "idle",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data[].{\n  \"Team\": name,\n  \"Cost\": cost * (1 - kubernetesPercent),\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/table",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "label:team"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Cloud Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Team",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "disabled": true,
+                    "options": {
+                      "alias": "Previous $/TOTAL",
+                      "mode": "reduceRow",
+                      "reduce": {
+                        "include": [
+                          "Cost Previous",
+                          "Cost Cloud Previous"
+                        ],
+                        "reducer": "sum"
+                      },
+                      "replaceFields": false
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "disabled": true,
+                    "options": {
+                      "excludeByName": {
+                        "Cost Cloud Previous": true,
+                        "Cost Previous": true,
+                        "Daily Cost Previous": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Cost": 1,
+                        "Team": 0
+                      },
+                      "renameByName": {
+                        "Cost": "${__from:date:MMM}"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Idle Cost Improvement"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-25": {
+        "kind": "Panel",
+        "spec": {
+          "id": 25,
+          "title": "${Team}: Cloud Service Costs (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data[].{\n  \"Service\": name, \n  \"$/TOTAL\": cost * (1 - kubernetesPercent),\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/table",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "service"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "label[team]:\"${Team}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Team",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "$/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "window": {
+                        "reducer": "mean",
+                        "windowAlignment": "trailing",
+                        "windowSize": 0.1,
+                        "windowSizeMode": "percentage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^%",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "^/DAY"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Days": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Cost": 1,
+                        "Days": 2,
+                        "Service": 0
+                      },
+                      "renameByName": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Idle Cost Improvement"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^%"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^/DAY"
+                    },
+                    "properties": [
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-26": {
+        "kind": "Panel",
+        "spec": {
+          "id": 26,
+          "title": "${Team}: Kubernetes Service Costs",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.*.{\n  \"Namespace\": name, \n  \"$/TOTAL\": totalCost,\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "namespace"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "label[team]:\"${Team}\""
+                            },
+                            {
+                              "key": "idle",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 27
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Namespace",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Current $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL Current"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days Current"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Previous $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL Previous"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days Previous"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "window": {
+                        "reducer": "mean",
+                        "windowAlignment": "trailing",
+                        "windowSize": 0.1,
+                        "windowSizeMode": "percentage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^%",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "^/DAY"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Current $/DAY": true,
+                        "Days": true,
+                        "Days Current": true,
+                        "Days Previous": true,
+                        "Previous $/DAY": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "$/TOTAL Current": 2,
+                        "$/TOTAL Previous": 1,
+                        "Current $/DAY": 4,
+                        "Days Current": 7,
+                        "Days Previous": 8,
+                        "Namespace": 0,
+                        "Previous $/DAY": 3,
+                        "^%": 6,
+                        "^/DAY": 5
+                      },
+                      "renameByName": {
+                        "$/TOTAL Current": "Current $/TOTAL",
+                        "$/TOTAL Previous": "Previous $/TOTAL",
+                        "Cost Current": "Current $/TOTAL",
+                        "Cost Previous": "Previous $/TOTAL",
+                        "Daily Cost Current": "Current $/DAY",
+                        "Daily Cost Previous": "Previous $/DAY",
+                        "Days Current": ""
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 1,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "^/DAY"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^%"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 107
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^/DAY"
+                    },
+                    "properties": [
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 115
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-27": {
+        "kind": "Panel",
+        "spec": {
+          "id": 27,
+          "title": "${Team}: Kubernetes Service Costs (Timeshift)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.sets[].allocations.*.{\n  \"Namespace\": name, \n  \"$/TOTAL\": totalCost,\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/allocation/summary",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "namespace"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "label[team]:\"${Team}\""
+                            },
+                            {
+                              "key": "idle",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Team",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "$/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Days": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "$/DAY": 2,
+                        "$/TOTAL": 1,
+                        "Days": 3,
+                        "Namespace": 0
+                      },
+                      "renameByName": {
+                        "Cost Current": "Current $/TOTAL",
+                        "Cost Previous": "Previous $/TOTAL",
+                        "Daily Cost Current": "Current $/DAY",
+                        "Daily Cost Previous": "Previous $/DAY"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "disabled": true,
+                    "options": {
+                      "alias": "^/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "window": {
+                        "reducer": "mean",
+                        "windowAlignment": "trailing",
+                        "windowSize": 0.1,
+                        "windowSizeMode": "percentage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "disabled": true,
+                    "options": {
+                      "alias": "^%",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "^/DAY"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {
+                "timeShift": "${timeshift}"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Idle Cost Improvement"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^%"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^/DAY"
+                    },
+                    "properties": [
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-28": {
+        "kind": "Panel",
+        "spec": {
+          "id": 28,
+          "title": "${Team}: Cloud Service Costs",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filterExpression": "",
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data[].{\n  \"Service\": name, \n  \"$/TOTAL\": cost * (1 - kubernetesPercent),\n  \"Days\": ($__to - $__from) / 86400000.0\n}",
+                        "source": "url",
+                        "summarizeBy": "",
+                        "type": "json",
+                        "url": "/model/cloudCost/view/table",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "service"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            },
+                            {
+                              "key": "filter",
+                              "value": "label[team]:\"${Team}\""
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Current",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Dashboard --"
+                      },
+                      "spec": {
+                        "panelId": 25
+                      }
+                    },
+                    "refId": "Previous",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "joinByField",
+                  "spec": {
+                    "options": {
+                      "byField": "Service",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Current $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL Current"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days Current"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "Previous $/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "$/TOTAL Previous"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Days Previous"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^/DAY",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        },
+                        "operator": "-",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Previous $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "window": {
+                        "reducer": "mean",
+                        "windowAlignment": "trailing",
+                        "windowSize": 0.1,
+                        "windowSizeMode": "percentage"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "calculateField",
+                  "spec": {
+                    "options": {
+                      "alias": "^%",
+                      "binary": {
+                        "left": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "^/DAY"
+                          }
+                        },
+                        "operator": "/",
+                        "right": {
+                          "matcher": {
+                            "id": "byName",
+                            "options": "Current $/DAY"
+                          }
+                        }
+                      },
+                      "mode": "binary",
+                      "reduce": {
+                        "reducer": "sum"
+                      },
+                      "unary": {
+                        "fieldName": "",
+                        "operator": "percent"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Current $/DAY": true,
+                        "Days": true,
+                        "Days Current": true,
+                        "Days Previous": true,
+                        "Previous $/DAY": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "$/TOTAL Current": 2,
+                        "$/TOTAL Previous": 1,
+                        "Current $/DAY": 4,
+                        "Days Current": 7,
+                        "Days Previous": 8,
+                        "Previous $/DAY": 3,
+                        "Service": 0,
+                        "^%": 6,
+                        "^/DAY": 5
+                      },
+                      "renameByName": {
+                        "$/TOTAL Current": "Current $/TOTAL",
+                        "$/TOTAL Previous": "Previous $/TOTAL",
+                        "Cost Current": "Current $/TOTAL",
+                        "Cost Previous": "Previous $/TOTAL",
+                        "Daily Cost Current": "Current $/DAY",
+                        "Daily Cost Previous": "Previous $/DAY",
+                        "Days Current": ""
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "frameIndex": 0,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "^/DAY"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Cost"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "currencyUSD"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^%"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 107
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "^/DAY"
+                    },
+                    "properties": [
+                      {
+                        "id": "color"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 115
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-29": {
+        "kind": "Panel",
+        "spec": {
+          "id": 29,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${Kubecost_Data_Source}"
+                      },
+                      "spec": {
+                        "columns": [],
+                        "computed_columns": [],
+                        "filters": [],
+                        "format": "table",
+                        "global_query_id": "",
+                        "parser": "backend",
+                        "root_selector": "$.data.totalCost",
+                        "source": "url",
+                        "type": "json",
+                        "url": "/model/assets/topline",
+                        "url_options": {
+                          "data": "",
+                          "method": "GET",
+                          "params": [
+                            {
+                              "key": "window",
+                              "value": "${__from:date:YYYY-MM-DDThh\\:mm\\:ss\\Z},${__to:date:YYYY-MM-DDThh\\:mm\\:ss\\Z}"
+                            },
+                            {
+                              "key": "aggregate",
+                              "value": "cluster"
+                            },
+                            {
+                              "key": "accumulate",
+                              "value": "true"
+                            },
+                            {
+                              "key": "viewId",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "refId": "Kubernetes Total Cost (Current Period)",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.0.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "sum"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value_and_name",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "currencyUSD",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "red"
+                      },
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "text"
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "Total Cost Reduction"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "RowsLayout",
+      "spec": {
+        "rows": [
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "title": "New row",
+              "collapse": false,
+              "hideHeader": true,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 6,
+                        "height": 2,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-15"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 6,
+                        "y": 0,
+                        "width": 6,
+                        "height": 2,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-17"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 6,
+                        "height": 2,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-18"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 18,
+                        "y": 0,
+                        "width": 6,
+                        "height": 2,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-29"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 2,
+                        "width": 24,
+                        "height": 10,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-23"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 12,
+                        "width": 12,
+                        "height": 12,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-26"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 12,
+                        "width": 12,
+                        "height": 12,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-28"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "title": "Hidden",
+              "collapse": true,
+              "layout": {
+                "kind": "AutoGridLayout",
+                "spec": {
+                  "maxColumnCount": 3,
+                  "columnWidthMode": "standard",
+                  "rowHeightMode": "standard",
+                  "items": [
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-27"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-25"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-22"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-24"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-16"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-30d",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Kubecost Cost Drivers",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "Kubecost_Data_Source",
+          "pluginId": "yesoreyeram-infinity-datasource",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "current": {
+            "text": "kc-hastings-direct-staging",
+            "value": "ffl5209rn40sgf"
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "IntervalVariable",
+        "spec": {
+          "name": "timeshift",
+          "query": "1M,60d,90d,1Q,1y",
+          "current": {
+            "text": "1d",
+            "value": "1d"
+          },
+          "options": [
+            {
+              "selected": true,
+              "text": "1d",
+              "value": "1d"
+            },
+            {
+              "selected": false,
+              "text": "7d",
+              "value": "7d"
+            },
+            {
+              "selected": false,
+              "text": "14d",
+              "value": "14d"
+            },
+            {
+              "selected": false,
+              "text": "30d",
+              "value": "30d"
+            },
+            {
+              "selected": false,
+              "text": "1M",
+              "value": "1M"
+            },
+            {
+              "selected": false,
+              "text": "90d",
+              "value": "90d"
+            },
+            {
+              "selected": false,
+              "text": "1y",
+              "value": "1y"
+            }
+          ],
+          "auto": false,
+          "auto_min": "10s",
+          "auto_count": 30,
+          "refresh": "onTimeRangeChanged",
+          "label": "Timeshift",
+          "hide": "dontHide",
+          "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "Currency",
+          "current": {
+            "text": "GBP",
+            "value": "GBP"
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "yesoreyeram-infinity-datasource",
+            "version": "v0",
+            "datasource": {
+              "name": "${Kubecost_Data_Source}"
+            },
+            "spec": {
+              "infinityQuery": {
+                "columns": [],
+                "data": "values\nfoo\nbar\nbaz",
+                "filters": [],
+                "format": "table",
+                "parser": "backend",
+                "refId": "",
+                "root_selector": "$.currencyCode",
+                "source": "url",
+                "type": "json",
+                "url": "/model/productConfigs",
+                "url_options": {
+                  "data": "",
+                  "method": "GET"
+                }
+              },
+              "queryType": "infinity",
+              "refId": "variable"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "CustomVariable",
+        "spec": {
+          "name": "Team",
+          "query": "",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "hide": "hideVariable",
+          "skipUrlSync": false,
+          "allowCustomValue": true,
+          "valuesFormat": "csv"
+        }
+      }
+    ]
+  }
+}
