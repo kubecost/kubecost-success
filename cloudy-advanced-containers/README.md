@@ -45,11 +45,26 @@ helm upgrade --install ibm-finops-agent ibm-finops/finops-agent \
 
 ## Optional Configuration
 
+ **Network Costs**
+
+Deploys network cost daemonset.
+
+1. **Install the Network Costs Daemonset from the Kubecost repo**
+
+   - [ ] Install the network costs daemonset from the Kubecost repo using the network costs values file template. 
+
+```bash
+helm upgrade --install ibm-kubecost-networkcosts \
+--repo https://kubecost.github.io/kubecost/ kubecost \  
+--namespace ibm-finops-agent --create-namespace \ 
+     -f networkcosts.yaml
+```
+
  **Kubecost Actions**
 
 Continuous Container Requst Right-sizing & Resource Quota Right-sizing Automation
 
-1. **Install the Cluster Controller from the Kubecost repo**
+2. **Install the Cluster Controller from the Kubecost repo**
 
    - [ ] Install the Cluster Controller from the Kubecost repo using the cluster-controller values file template. Ensure you modify global.clusterID to match the cluster name of the agent cluster.
 
