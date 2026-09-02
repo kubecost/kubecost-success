@@ -1,2 +1,17 @@
+frontend:
+  enabled: false
+localStore:
+  enabled: false
+finopsagent:
+  enabled: false  # Use IBM finops-agent instead
+forecasting:
+  enabled: false
+aggregator:
+  enabled: false
+cloudCost:
+  enabled: false
 networkCosts:
   enabled: true
+clusterController:
+  enabled: false
+
