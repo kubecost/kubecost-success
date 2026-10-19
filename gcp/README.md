@@ -21,7 +21,7 @@ This guide provides step-by-step instructions for deploying Kubecost in GCP.
    - [ ] Configure [federated-store.yaml](/gcp/federated-store.yaml) pointing to the google storage bucket configured in step 2 of prerequisites. 
    - [ ] Create secret for object storage in Kubecost namespace.
 ```bash
-   kubectl create secret generic federated-store --from-file=object-store.yaml -n kubecost
+   kubectl create secret generic federated-store --from-file=federated-store.yaml -n kubecost
 ```
 
 2. **Primary Cluster Installation**
@@ -42,8 +42,10 @@ helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ ku
    - [ ] Install Kubecost on secondary clusters using [secondary values fle template](/gcp/values-gcp-secondary.yaml).
 
 ```bash
-helm upgrade --install kubecost   --repo https://kubecost.github.io/kubecost/ kubecost   --namespace kedd-primary --create-namespace \
--f values-gcp-primary.yaml
+helm upgrade --install kubecost \
+  --repo https://kubecost.github.io/kubecost/ kubecost \
+  --namespace kubecost \
+  -f values-gcp-secondary.yaml
 ```
   - [ ] Verify ETL pipeline is working by checking that a /federated directory was created in the object-store. If no /federated directory exists, double check configuration, finops-agent pod logs or test that the user can curl the bucket endpoint from inside the finops-agent container.
 
