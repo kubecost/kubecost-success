@@ -70,9 +70,12 @@ finopsagent:
 ## @param serviceAccount.name Name of the service account to use. If not set and `create` is `true`, a name is generated
 ## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
 ## @param serviceAccount.annotations Additional custom annotations for the ServiceAccount      
-  serviceAccount:
-    create: false
-    name: "kubecost-finops-agent"
+  serviceAccount: 
+# This example has Kubecost create the service account + annotation. It does not automatically configure the role/ to trust the service account.
+# To use a dedicated service account, set create to false, remove the annotation, and specify the name of your dedicated service account. 
+    create: true
+    annotations: # Use the annotation for your cloud provider. This example uses AWS IAM Roles.
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/<roleName>
   agent:
     collectorDataSource:
       enabled: true
