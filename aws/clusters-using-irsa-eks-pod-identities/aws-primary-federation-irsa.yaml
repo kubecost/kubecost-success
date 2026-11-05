@@ -11,6 +11,14 @@ global:
   federatedStorage:
     config: ""
   # existingSecret: federated-store 
+  # If both are provided, the string in helm values take precedence.
+    # Example:
+    #   config: |-
+    #     type: S3
+    #     config:
+    #       bucket: ibm-kubecost-unified-agent-demo-data
+    #       endpoint: s3.amazonaws.com
+    #       region: us-west-2
   #   enabled: false #not needed for eval
   # If you want to use a different file name for the federated storage config, you can set the fileName value.
   # fileName: federated-store.yaml  # set this value to change what the file name for the yaml config is
